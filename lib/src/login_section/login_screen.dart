@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../dashboard/home_screen.dart';
 import '../tools/colors.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -266,6 +267,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
+                  onTap: (){
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                          return const HomeScreen();
+                        }));
+                  },
                   // onTap: () {
                   //   if (firstNameController.text.isEmpty) {
                   //     setState(() {
@@ -308,10 +315,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           fontWeight: FontWeight.bold, color: colorBlue),
                     ),
                       onTap: (){
-                        // Navigator.push(context,
-                        //     MaterialPageRoute(builder: (context) {
-                        //       return const RegEmail();
-                        //     }));
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                              return const RegEmail();
+                            }));
                       },
                     ),
 

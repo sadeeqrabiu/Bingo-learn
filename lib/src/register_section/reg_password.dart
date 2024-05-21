@@ -1,27 +1,23 @@
-import 'package:bingolearn/src/register_section/reg_otp.dart';
-import 'package:bingolearn/src/tools/colors.dart';
+import 'package:bingolearn/src/dashboard/home_screen.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../tools/colors.dart';
 
 
-class RegEmail extends StatefulWidget {
-  const RegEmail({super.key});
+class RegPassword extends StatefulWidget {
+  const RegPassword({super.key});
 
   @override
-  State<RegEmail> createState() => _RegEmailState();
+  State<RegPassword> createState() => _RegPasswordState();
 }
 
-class _RegEmailState extends State<RegEmail> {
-
+class _RegPasswordState extends State<RegPassword> {
   //Error Message
   var errorMessage = false;
 
   //less then <2 Error Message
   var errorLessThen = false;
-
-
   @override
   Widget build(BuildContext context) {
     //MediaQuery
@@ -69,34 +65,32 @@ class _RegEmailState extends State<RegEmail> {
                                 width: width*0.1,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(50),
+                                  color: colorGrey.withOpacity(0.6),
+                                ),
+                              ),
+                              SizedBox(width: width*0.04,),
+                              Container(
+                                height: height*0.008,
+                                width: width*0.1,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: colorGrey.withOpacity(0.6),
+                                ),
+                              ),
+                              SizedBox(width: width*0.04,),
+                              Container(
+                                height: height*0.008,
+                                width: width*0.1,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
                                   color: colorMain,
                                 ),
                               ),
-                              SizedBox(width: width*0.04,),
-                              Container(
-                                height: height*0.008,
-                                width: width*0.1,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                  color: colorGrey.withOpacity(0.6),
-                                ),
-                              ),
-                              SizedBox(width: width*0.04,),
-                              Container(
-                                height: height*0.008,
-                                width: width*0.1,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                  color: colorGrey.withOpacity(0.6),
-                                ),
-                              ),
-
                             ],
                           ),
                         ],
                       ),
                     ),
-
 
                     Container(
                       margin: EdgeInsets.only(
@@ -107,7 +101,7 @@ class _RegEmailState extends State<RegEmail> {
                         children: <Widget>[
                           const Row(
                             children: [
-                              Text('Email',
+                              Text('Create Password',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold, fontSize: 25)),
                             ],
@@ -115,7 +109,7 @@ class _RegEmailState extends State<RegEmail> {
                           SizedBox(
                             width: width * 1.0,
                             child: Text(
-                              'Enter your phone Email',
+                              'Enter your chosen Password',
                               style: TextStyle(
                                   fontSize: 12, color: colorBlack.withOpacity(0.7)),
                               textAlign: TextAlign.start,
@@ -188,10 +182,10 @@ class _RegEmailState extends State<RegEmail> {
                                   child: Row(
                                     children: [
 
-                                       Padding(
+                                      Padding(
                                         padding: EdgeInsets.only(left: width*.02),
                                         child: const Icon(
-                                          EvaIcons.emailOutline,
+                                          EvaIcons.lockOutline,
                                           color: Colors.grey,
                                         ),
                                       ),
@@ -201,7 +195,43 @@ class _RegEmailState extends State<RegEmail> {
                                           // controller: firstNameController,
                                           keyboardType: TextInputType.text,
                                           decoration: InputDecoration(
-                                              hintText: 'Email',
+                                              hintText: 'password',
+                                              // prefixIcon: EvaIcons.emailOutline,
+                                              hintStyle: TextStyle(color: colorGrey, fontSize: 15),
+                                              border: InputBorder.none
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: height*.02,),
+                                Container(
+                                  height: height*.06,
+                                  width: width,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: colorGrey, //                   <--- border color
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+
+                                      Padding(
+                                        padding: EdgeInsets.only(left: width*.02),
+                                        child: const Icon(
+                                          EvaIcons.lockOutline,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      SizedBox(width: width*.02,),
+                                      Flexible(
+                                        child: TextFormField(
+                                          // controller: firstNameController,
+                                          keyboardType: TextInputType.text,
+                                          decoration: InputDecoration(
+                                              hintText: 'Confirm Password',
                                               // prefixIcon: EvaIcons.emailOutline,
 
                                               hintStyle: TextStyle(color: colorGrey, fontSize: 15),
@@ -212,6 +242,7 @@ class _RegEmailState extends State<RegEmail> {
                                     ],
                                   ),
                                 ),
+
                               ],
                             ),
                           ),
@@ -240,7 +271,7 @@ class _RegEmailState extends State<RegEmail> {
                       color: colorMain),
                   child: Center(
                     child: Text(
-                      'Next',
+                      'Finish',
                       style: TextStyle(color: colorPrimary),
                     ),
                   ),
@@ -248,7 +279,7 @@ class _RegEmailState extends State<RegEmail> {
                 onTap: (){
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) {
-                        return const RegOtp();
+                        return const HomeScreen();
                       }));
                 },
                 // onTap: () {

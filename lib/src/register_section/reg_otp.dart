@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bingolearn/src/register_section/reg_user.dart';
 import 'package:bingolearn/src/tools/colors.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -215,7 +216,7 @@ class _RegOtpState extends State<RegOtp> {
                             ),
                           ),
                           SizedBox(
-                            height: height * 0.05,
+                            height: height * 0.04,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -234,7 +235,7 @@ class _RegOtpState extends State<RegOtp> {
                                   child: Text(
                                     'Resend Code',
                                     style: TextStyle(
-                                      color: colorSecondary,
+                                      color: colorRed,
                                     ),
                                   ),
                                   onTap: () {
@@ -273,13 +274,13 @@ class _RegOtpState extends State<RegOtp> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        backgroundColor: colorSecondary),
+                        backgroundColor: colorMain),
                     child: isLoading
                         ? const CircularProgressIndicator(
                       color: Colors.white,
                     )
                         : const Text(
-                      'Proceed',
+                      'Continue',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 15,
@@ -293,10 +294,10 @@ class _RegOtpState extends State<RegOtp> {
                         });
                       });
                       // print(widget.firstName + widget.middleName +  widget.lastName + widget.phoneNumber + widget.email + widget.gander);
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context) {
-                      //       return const RegEmail();
-                      //     }));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                            return const RegUser();
+                          }));
                       // verifyOtp();
                     },
                   ),
