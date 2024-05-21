@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../tools/colors.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,6 +17,13 @@ class _HomeScreenState extends State<HomeScreen> {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
     return Scaffold(
+        backgroundColor: colorPrimary,
+        appBar: AppBar(
+          backgroundColor: colorMain,
+          toolbarHeight: height * 0.02,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+        ),
         body: Stack(
           children: [
             Container(
