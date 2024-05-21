@@ -1,3 +1,5 @@
+import 'package:bingolearn/src/login_section/login_screen.dart';
+import 'package:bingolearn/src/register_section/reg_email.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -104,7 +106,10 @@ class _LandingScreenState extends State<LandingScreen> {
                   ),
                 ),
                 onTap: (){
-
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) {
+                        return const LoginScreen();
+                      }));
                 },
               )
             ],
