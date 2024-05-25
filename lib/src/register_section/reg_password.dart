@@ -1,4 +1,5 @@
 import 'package:bingolearn/src/dashboard/home_screen.dart';
+import 'package:bingolearn/src/register_section/selection_screen.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 
@@ -279,7 +280,7 @@ class _RegPasswordState extends State<RegPassword> {
                 onTap: (){
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) {
-                        return const HomeScreen();
+                        return const SelectionScreen();
                       }));
                 },
                 // onTap: () {
