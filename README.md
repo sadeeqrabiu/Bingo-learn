@@ -43,6 +43,6 @@ immediately when first run, as it is used to execute the `flutter` tool itself.
 This will also occur when Flutter is upgraded (e.g. by running the `flutter
 upgrade` command).
 
-## About Project - BingoLearn 
+## About Project - BingoLearn-n
 A language learning Mobile Application With Vertex AI 
 
