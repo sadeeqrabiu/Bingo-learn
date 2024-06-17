@@ -1,20 +1,48 @@
-<<<<<<< HEAD
-# Bingo-learn
-=======
-# bingolearn
 
-bingo learn project.
+<a href="https://flutter.dev/">
+  <h1 align="center">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://storage.googleapis.com/cms-storage-bucket/6e19fee6b47b36ca613f.png">
+      <img alt="Flutter" src="https://storage.googleapis.com/cms-storage-bucket/c823e53b3a1a7b0d36a9.png">
+    </picture>
+  </h1>
+</a>
 
-## Getting Started
+[![Flutter CI Status](https://flutter-dashboard.appspot.com/api/public/build-status-badge?repo=flutter)](https://flutter-dashboard.appspot.com/#/build?repo=flutter)
 
-This project is a starting point for a Flutter application.
+[![codecov](https://codecov.io/gh/flutter/flutter/branch/master/graph/badge.svg?token=11yDrJU2M2)](https://codecov.io/gh/flutter/flutter)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/5631/badge)](https://bestpractices.coreinfrastructure.org/projects/5631)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/flutter/flutter/badge)](https://deps.dev/project/github/flutter%2Fflutter)
+[![SLSA 1](https://slsa.dev/images/gh-badge-level1.svg)](https://slsa.dev)
 
-A few resources to get you started if this is your first Flutter project:
+Flutter is Google's SDK for crafting beautiful, fast user experiences for
+mobile, web, and desktop from a single codebase. Flutter works with existing
+code, is used by developers and organizations around the world, and is free and
+open source.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Documentation
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
->>>>>>> 6b6efe4 (first commit)
+* [Install Flutter](https://flutter.dev/get-started/)
+* [Flutter documentation](https://docs.flutter.dev/)
+* [Development wiki](https://github.com/flutter/flutter/wiki)
+* [Contributing to Flutter](https://github.com/flutter/flutter/blob/main/CONTRIBUTING.md)
+
+For announcements about new releases, follow the
+[flutter-announce@googlegroups.com](https://groups.google.com/forum/#!forum/flutter-announce)
+mailing list. Our documentation also tracks [breaking
+changes](https://docs.flutter.dev/release/breaking-changes) across releases.
+
+## Terms of service
+
+The Flutter tool may occasionally download resources from Google servers. By
+downloading or using the Flutter SDK, you agree to the Google Terms of Service:
+https://policies.google.com/terms
+For example, when installed from GitHub (as opposed to from a prepackaged
+archive), the Flutter tool will download the Dart SDK from Google servers
+immediately when first run, as it is used to execute the `flutter` tool itself.
+This will also occur when Flutter is upgraded (e.g. by running the `flutter
+upgrade` command).
+
+## About Project -  BingoLearn
+A language learning Mobile Application With Gemini - Vertex AI
+
