@@ -1,3 +1,5 @@
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../tools/colors.dart';
@@ -41,7 +43,22 @@ class _BingoStartState extends State<BingoStart> {
                 padding: EdgeInsets.only(left: width * .05, right: width * .05),
                 child: Column(
                   children: [
-
+                    
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                            child: Icon(EvaIcons.arrowIosBackOutline, color: colorPrimary,),
+                          onTap: (){
+                              Navigator.pop(context);
+                          },
+                        ),
+                        Text('Bingo.AI', style: TextStyle(color: colorPrimary, fontWeight: FontWeight.bold),),
+                        SizedBox(
+                          width: width*.02,
+                        )
+                      ],
+                    )
                   ],
                 ))
           ],

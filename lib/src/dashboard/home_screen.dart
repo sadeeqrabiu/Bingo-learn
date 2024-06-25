@@ -1,3 +1,4 @@
+import 'package:bingolearn/src/Bingo/bingo_start.dart';
 import 'package:bingolearn/src/lesson/lesson_dashboard.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -160,52 +161,60 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          height: height*.22,
-                          width: width*.34,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: colorBlue.withOpacity(0.8)
-                          ),
-                          child: Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Padding(
-                              padding: EdgeInsets.only(left: width*.02),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    width: width * 0.13,
-                                    child: Container(
-                                      margin: EdgeInsets.only(top: height*.01),
-                                      height: height * 0.065,
-                                      decoration: BoxDecoration(
-                                        color: colorPrimary,
-                                        shape: BoxShape.circle,
-                                        // image: DecorationImage(
-                                        //     image: NetworkImage(profileModel.profileImg),
-                                        //     fit: BoxFit.cover),
-                                      ),
-                                      child: Center(
-                                        child: SizedBox(
-                                          height: height * 0.03,
-                                          child: SvgPicture.asset(
-                                            'assets/icons/aiIcon.svg',
+                        GestureDetector(
+                          child: Container(
+                            height: height*.22,
+                            width: width*.34,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: colorBlue.withOpacity(0.8)
+                            ),
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: width*.02),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: width * 0.13,
+                                      child: Container(
+                                        margin: EdgeInsets.only(top: height*.01),
+                                        height: height * 0.065,
+                                        decoration: BoxDecoration(
+                                          color: colorPrimary,
+                                          shape: BoxShape.circle,
+                                          // image: DecorationImage(
+                                          //     image: NetworkImage(profileModel.profileImg),
+                                          //     fit: BoxFit.cover),
+                                        ),
+                                        child: Center(
+                                          child: SizedBox(
+                                            height: height * 0.03,
+                                            child: SvgPicture.asset(
+                                              'assets/icons/aiIcon.svg',
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Gap(height*.03),
-                                  Text('Talk With', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: colorPrimary),),
-                                  Text('Bingo', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: colorPrimary),),
-                                  Text('Let’s try it now!', style: TextStyle(fontSize: 12, color: colorPrimary),)
+                                    Gap(height*.03),
+                                    Text('Talk With', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: colorPrimary),),
+                                    Text('Bingo', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: colorPrimary),),
+                                    Text('Let’s try it now!', style: TextStyle(fontSize: 12, color: colorPrimary),)
 
 
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
+                          onTap: (){
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                                  return const BingoStart();
+                                }));
+                          },
                         ),
                         Gap(width*.0),
                         GestureDetector(
