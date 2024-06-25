@@ -1,5 +1,8 @@
+import 'package:bingolearn/src/dashboard/home_screen.dart';
+import 'package:bingolearn/src/lesson/lesson_dashboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
@@ -53,15 +56,91 @@ class _LessonCompleteState extends State<LessonComplete> {
                               'assets/svgs/BingoOne.svg',
                             ),
                           ),
+                          Gap(height*.02),
                           Text(
                             'Lesson Completed',
                             style: TextStyle(
                                 color: colorPrimary,
                                 fontWeight: FontWeight.bold),
-                          )
+                          ),
+                          Gap(height*.05),
+                          Container(
+                            height: height*.05,
+                            width: width*.7,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: colorPrimary)
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.only(left: width*.02),
+                              child: Row(
+                                children: [
+                                  Text('Star: 4', style: TextStyle(color: colorPrimary ),)
+                                ],
+                              ),
+                            ),
+                          ),
+                          Gap(height*.04),
+                          Container(
+                            height: height*.05,
+                            width: width*.7,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: colorPrimary)
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.only(left: width*.02),
+                              child: Row(
+                                children: [
+                                  Text('Time: 10min', style: TextStyle(color: colorPrimary ),)
+                                ],
+                              ),
+                            ),
+                          ),
+                          Gap(height*.04),
+                          Container(
+                            height: height*.05,
+                            width: width*.7,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: colorPrimary)
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.only(left: width*.02),
+                              child: Row(
+                                children: [
+                                  Text('Score: 6/10', style: TextStyle(color: colorPrimary ),)
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          Gap(height*.08),
+                          GestureDetector(
+                            child: Container(
+                              height: height*.05,
+                              width: width*.7,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: colorGrey.withOpacity(0.2)
+                              ),
+                              child: Center(child: Text('Completed', style: TextStyle(color: colorPrimary ),)),
+                            ),
+                            onTap: (){
+                              //
+                              ///
+                              /////
+                              /////This should not return back
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                    return const HomeScreen();
+                                  }));
+                            },
+                          ),
                         ],
                       ),
                     ),
+
                   ],
                 ))
           ],
