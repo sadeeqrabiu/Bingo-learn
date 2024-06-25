@@ -183,7 +183,7 @@ class _LessonState extends State<Lesson> {
                         ],
                       ),
                     ),
-                    Gap(height*.45),
+                    Gap(height*.4),
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: GestureDetector(
