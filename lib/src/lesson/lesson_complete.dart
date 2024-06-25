@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:gap/gap.dart';
 
 import '../tools/colors.dart';
 
@@ -39,7 +42,26 @@ class _LessonCompleteState extends State<LessonComplete> {
                 padding: EdgeInsets.only(left: width * .05, right: width * .05),
                 child: Column(
                   children: [
-
+                    Gap(height * .2),
+                    Center(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            // margin: EdgeInsets.only(right: width*0.04, bottom: height*.025),
+                            height: height * 0.17,
+                            child: SvgPicture.asset(
+                              'assets/svgs/BingoOne.svg',
+                            ),
+                          ),
+                          Text(
+                            'Lesson Completed',
+                            style: TextStyle(
+                                color: colorPrimary,
+                                fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 ))
           ],
