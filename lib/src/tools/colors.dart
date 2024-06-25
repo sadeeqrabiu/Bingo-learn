@@ -7,6 +7,7 @@ var colorPrimary = const Color(0xFFFFFFFF);
 var colorSecondary = const Color(0xFF4A5C6A);
 var colorMain = const Color(0xFF11212D);
 var colorBlue = const Color(0xFF4F5BFE);
+var colorBlueSecond = const Color(0xFF2196F3);
 var colorBlack = const Color(0xFF000000);
 var colorGrey = const Color(0xFFD9D9D9);
 var colorYellow = const Color(0xFFFBBA2D);
