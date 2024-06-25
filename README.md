@@ -1,7 +1,7 @@
 <<<<<<< HEAD
 # Bingo-learn
 =======
-# bingolear
+# bingolearn
 
 bingo learn project.
 
