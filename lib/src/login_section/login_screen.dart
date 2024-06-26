@@ -71,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     width: width * 0.2,
                   ),
-                  Center(
+                  const Center(
                     child: Text(
                       'BingoLearn',
                       style:

@@ -1,4 +1,5 @@
 import 'package:bingolearn/src/Bingo/bingo_start.dart';
+import 'package:bingolearn/src/User_profile%20/profile.dart';
 import 'package:bingolearn/src/lesson/lesson_dashboard.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -353,18 +354,25 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             Gap(width*.1),
-                            SizedBox(
-                              width: width * 0.10,
-                              child: Container(
-                                height: height * 0.05,
-                                decoration: BoxDecoration(
-                                  color: colorPrimary,
-                                  shape: BoxShape.circle,
-                                  // image: DecorationImage(
-                                  //     image: NetworkImage(profileModel.profileImg),
-                                  //     fit: BoxFit.cover),
+                            GestureDetector(
+                              child: SizedBox(
+                                width: width * 0.10,
+                                child: Container(
+                                  height: height * 0.05,
+                                  decoration: BoxDecoration(
+                                    color: colorPrimary,
+                                    shape: BoxShape.circle,
+                                    image: const DecorationImage(
+                                      image: AssetImage('assets/images/Avatar.png'),)
+                                  ),
                                 ),
                               ),
+                              onTap: (){
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return const Profile();
+                                    }));
+                              },
                             ),
                           ],
                         ),
