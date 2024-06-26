@@ -1,4 +1,6 @@
 import 'package:bingolearn/src/Bingo/bingo_start.dart';
+import 'package:bingolearn/src/User_profile%20/profile.dart';
+import 'package:bingolearn/src/game/game_start.dart';
 import 'package:bingolearn/src/lesson/lesson_dashboard.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -278,48 +280,56 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          height: height*.22,
-                          width: width*.34,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: colorBlueSecond.withOpacity(0.8)
-                          ),
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: width * 0.13,
-                                  child: Container(
-                                    margin: EdgeInsets.only(top: height*.01),
-                                    height: height * 0.065,
-                                    decoration: BoxDecoration(
-                                      color: colorPrimary,
-                                      shape: BoxShape.circle,
-                                      // image: DecorationImage(
-                                      //     image: NetworkImage(profileModel.profileImg),
-                                      //     fit: BoxFit.cover),
-                                    ),
-                                    child: Center(
-                                      child: SizedBox(
-                                        height: height * 0.03,
-                                        child: SvgPicture.asset(
-                                          'assets/icons/gameIcon.svg',
+                        GestureDetector(
+                          child: Container(
+                            height: height*.22,
+                            width: width*.34,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: colorBlueSecond.withOpacity(0.8)
+                            ),
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: width * 0.13,
+                                    child: Container(
+                                      margin: EdgeInsets.only(top: height*.01),
+                                      height: height * 0.065,
+                                      decoration: BoxDecoration(
+                                        color: colorPrimary,
+                                        shape: BoxShape.circle,
+                                        // image: DecorationImage(
+                                        //     image: NetworkImage(profileModel.profileImg),
+                                        //     fit: BoxFit.cover),
+                                      ),
+                                      child: Center(
+                                        child: SizedBox(
+                                          height: height * 0.03,
+                                          child: SvgPicture.asset(
+                                            'assets/icons/gameIcon.svg',
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Gap(height*.07),
-                                Text('Games', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: colorPrimary),),
-                                Text('Learning make fun!', style: TextStyle(fontSize: 12, color: colorPrimary),)
+                                  Gap(height*.07),
+                                  Text('Games', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: colorPrimary),),
+                                  Text('Learning make fun!', style: TextStyle(fontSize: 12, color: colorPrimary),)
 
 
-                              ],
+                                ],
+                              ),
                             ),
                           ),
+                          onTap: (){
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                                  return const GameStart();
+                                }));
+                          },
                         ),
 
                         SizedBox(
@@ -353,18 +363,25 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             Gap(width*.1),
-                            SizedBox(
-                              width: width * 0.10,
-                              child: Container(
-                                height: height * 0.05,
-                                decoration: BoxDecoration(
-                                  color: colorPrimary,
-                                  shape: BoxShape.circle,
-                                  // image: DecorationImage(
-                                  //     image: NetworkImage(profileModel.profileImg),
-                                  //     fit: BoxFit.cover),
+                            GestureDetector(
+                              child: SizedBox(
+                                width: width * 0.10,
+                                child: Container(
+                                  height: height * 0.05,
+                                  decoration: BoxDecoration(
+                                    color: colorPrimary,
+                                    shape: BoxShape.circle,
+                                    image: const DecorationImage(
+                                      image: AssetImage('assets/images/Avatar.png'),)
+                                  ),
                                 ),
                               ),
+                              onTap: (){
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return const Profile();
+                                    }));
+                              },
                             ),
                           ],
                         ),
