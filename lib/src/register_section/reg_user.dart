@@ -1,6 +1,7 @@
 import 'package:bingolearn/src/register_section/reg_password.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 import '../tools/colors.dart';
 
@@ -15,10 +16,12 @@ class RegUser extends StatefulWidget {
 
 class _RegUserState extends State<RegUser> {
   //Error Message
-  var errorMessage = false;
+  var errorFName = false;
+  var errorLName = false;
 
-  //less then <2 Error Message
-  var errorLessThen = false;
+
+  TextEditingController fNameController = TextEditingController();
+  TextEditingController lNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -123,52 +126,7 @@ class _RegUserState extends State<RegUser> {
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (errorMessage)
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      EvaIcons.checkmarkCircle,
-                                      color: Colors.red,
-                                    ),
-                                    SizedBox(
-                                      width: width * .02,
-                                    ),
-                                    Text(
-                                      'Field can\'t be empty',
-                                      style: TextStyle(
-                                        color: colorBlack,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (errorLessThen)
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      EvaIcons.checkmarkCircle,
-                                      color: Colors.red,
-                                    ),
-                                    SizedBox(
-                                      width: width * .02,
-                                    ),
-                                    Text(
-                                      'Invalid FirstName',
-                                      style: TextStyle(
-                                        color: colorBlack,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                            ],
-                          ),
+
                           Form(
                             child: Column(
                               children: [
@@ -197,7 +155,7 @@ class _RegUserState extends State<RegUser> {
                                       SizedBox(width: width*.02,),
                                       Flexible(
                                         child: TextFormField(
-                                          // controller: firstNameController,
+                                          controller: fNameController,
                                           keyboardType: TextInputType.text,
                                           decoration: InputDecoration(
                                               hintText: 'First Name',
@@ -209,6 +167,30 @@ class _RegUserState extends State<RegUser> {
                                       ),
                                     ],
                                   ),
+                                ),
+                                Gap(height*.005),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (errorFName)
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            EvaIcons.checkmarkCircle,
+                                            color: Colors.red,
+                                          ),
+                                          SizedBox(
+                                            width: width * .02,
+                                          ),
+                                          Text(
+                                            'Field can\'t be empty',
+                                            style: TextStyle(
+                                              color: colorRed,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                  ],
                                 ),
                                 SizedBox(height: height*.01,),
                                 const Row(
@@ -275,7 +257,7 @@ class _RegUserState extends State<RegUser> {
                                       SizedBox(width: width*.02,),
                                       Flexible(
                                         child: TextFormField(
-                                          // controller: firstNameController,
+                                          controller: lNameController,
                                           keyboardType: TextInputType.text,
                                           decoration: InputDecoration(
                                               hintText: 'Last Name',
@@ -288,6 +270,30 @@ class _RegUserState extends State<RegUser> {
                                       ),
                                     ],
                                   ),
+                                ),
+                                Gap(height*.005),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (errorLName)
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            EvaIcons.checkmarkCircle,
+                                            color: Colors.red,
+                                          ),
+                                          SizedBox(
+                                            width: width * .02,
+                                          ),
+                                          Text(
+                                            'Field can\'t be empty',
+                                            style: TextStyle(
+                                              color: colorRed,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                  ],
                                 ),
 
                               ],
@@ -318,41 +324,33 @@ class _RegUserState extends State<RegUser> {
                       color: colorMain),
                   child: Center(
                     child: Text(
-                      'Continue',
+                      'Next',
                       style: TextStyle(color: colorPrimary),
                     ),
                   ),
                 ),
-                onTap: (){
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) {
-                        return const RegPassword();
-                      }));
+
+                onTap: () {
+                  if (fNameController.text.isEmpty) {
+                    setState(() {
+                      errorFName = true;
+                    });
+                  } else if (lNameController.text.isEmpty) {
+                    setState(() {
+                      errorLName = true;
+                      errorFName = false;
+                    });
+                  } else {
+                    setState(() {
+                      errorLName = false;
+                      errorFName = false;
+                    });
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                          return const RegPassword();
+                        }));
+                  }
                 },
-                // onTap: () {
-                //   if (firstNameController.text.isEmpty) {
-                //     setState(() {
-                //       errorMessage = true;
-                //       errorLessThen = false;
-                //     });
-                //   } else if (firstNameController.text.length <= 2) {
-                //     setState(() {
-                //       errorMessage = false;
-                //       errorLessThen = true;
-                //     });
-                //   } else {
-                //     setState(() {
-                //       errorMessage = false;
-                //       errorLessThen = false;
-                //     });
-                //     // PageRouteTransition.curve;
-                //     // PageRouteTransition.push(context, MName(firstName: firstNameController.text,));
-                //     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                //       return MName(firstName: firstNameController.text,
-                //       );
-                //     }));
-                //   }
-                // },
               ),
               SizedBox(
                 height: height * 0.02,

@@ -19,8 +19,10 @@ class _RegEmailState extends State<RegEmail> {
   var errorMessage = false;
 
   //less then <2 Error Message
-  var errorLessThen = false;
+  var errorInvalidEmail = false;
 
+
+  TextEditingController emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +142,7 @@ class _RegEmailState extends State<RegEmail> {
                                     Text(
                                       'Field can\'t be empty',
                                       style: TextStyle(
-                                        color: colorBlack,
+                                        color: colorRed,
                                       ),
                                     ),
                                   ],
@@ -150,7 +152,7 @@ class _RegEmailState extends State<RegEmail> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              if (errorLessThen)
+                              if (errorInvalidEmail)
                                 Row(
                                   children: [
                                     const Icon(
@@ -161,9 +163,9 @@ class _RegEmailState extends State<RegEmail> {
                                       width: width * .02,
                                     ),
                                     Text(
-                                      'Invalid FirstName',
+                                      'Invalid email address',
                                       style: TextStyle(
-                                        color: colorBlack,
+                                        color: colorRed,
                                       ),
                                     ),
                                   ],
@@ -198,8 +200,8 @@ class _RegEmailState extends State<RegEmail> {
                                       SizedBox(width: width*.02,),
                                       Flexible(
                                         child: TextFormField(
-                                          // controller: firstNameController,
-                                          keyboardType: TextInputType.text,
+                                          controller: emailController,
+                                          keyboardType: TextInputType.emailAddress,
                                           decoration: InputDecoration(
                                               hintText: 'Email',
                                               // prefixIcon: EvaIcons.emailOutline,
@@ -245,36 +247,25 @@ class _RegEmailState extends State<RegEmail> {
                     ),
                   ),
                 ),
-                onTap: (){
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) {
-                        return const RegOtp();
-                      }));
+                onTap: () {
+                  if (emailController.text.isEmpty) {
+                    setState(() {
+                      errorMessage = true;
+                      errorInvalidEmail = false;
+                    });
+                  } else if (!emailController.text.contains('@')) {
+                    setState(() {
+                      errorMessage = false;
+                      errorInvalidEmail = true;
+                    });
+                  } else {
+                    errorMessage = false;
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                          return const RegOtp();
+                        }));
+                  }
                 },
-                // onTap: () {
-                //   if (firstNameController.text.isEmpty) {
-                //     setState(() {
-                //       errorMessage = true;
-                //       errorLessThen = false;
-                //     });
-                //   } else if (firstNameController.text.length <= 2) {
-                //     setState(() {
-                //       errorMessage = false;
-                //       errorLessThen = true;
-                //     });
-                //   } else {
-                //     setState(() {
-                //       errorMessage = false;
-                //       errorLessThen = false;
-                //     });
-                //     // PageRouteTransition.curve;
-                //     // PageRouteTransition.push(context, MName(firstName: firstNameController.text,));
-                //     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                //       return MName(firstName: firstNameController.text,
-                //       );
-                //     }));
-                //   }
-                // },
               ),
               SizedBox(
                 height: height * 0.02,

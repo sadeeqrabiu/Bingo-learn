@@ -3,6 +3,7 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:gap/gap.dart';
 
 import '../dashboard/home_screen.dart';
 import '../tools/colors.dart';
@@ -15,20 +16,30 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  //password foiled visibility
+  bool isPasswordVisible = true;
+
   //Error Message
+  var errorEmail = false;
+  var errorPassword = false;
   var errorMessage = false;
 
   //less then <2 Error Message
   var errorLessThen = false;
+
+
+  //controllers
+  TextEditingController emailController = TextEditingController();
+
+  TextEditingController passwordController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
     //MediaQuery
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
-
-    //check keyboard
-    final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
 
     return Scaffold(
       backgroundColor: colorPrimary,
@@ -111,44 +122,23 @@ class _LoginScreenState extends State<LoginScreen> {
                             width: width * .02,
                           ),
                           Text(
-                            'Field can\'t be empty',
+                            'Invalid login details',
                             style: TextStyle(
-                              color: colorBlack,
+                              color: colorRed,
                             ),
                           ),
                         ],
                       )
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (errorLessThen)
-                      Row(
-                        children: [
-                          const Icon(
-                            EvaIcons.checkmarkCircle,
-                            color: Colors.red,
-                          ),
-                          SizedBox(
-                            width: width * .02,
-                          ),
-                          Text(
-                            'Invalid FirstName',
-                            style: TextStyle(
-                              color: colorBlack,
-                            ),
-                          ),
-                        ],
-                      )
-                  ],
-                ),
+
                 Form(
                   child: Column(
                     children: [
                       SizedBox(
                         height: height * 0.04,
                       ),
+
                       Container(
                         height: height * .06,
                         width: width,
@@ -171,9 +161,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             SizedBox(
                               width: width * .02,
                             ),
+
                             Flexible(
                               child: TextFormField(
-                                // controller: firstNameController,
+                                controller: emailController,
                                 keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
                                     hintText: 'Email',
@@ -186,6 +177,30 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ],
                         ),
+                      ),
+                      Gap(height*.005),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (errorEmail)
+                            Row(
+                              children: [
+                                const Icon(
+                                  EvaIcons.checkmarkCircle,
+                                  color: Colors.red,
+                                ),
+                                SizedBox(
+                                  width: width * .02,
+                                ),
+                                Text(
+                                  'Email Can\'t be Empty' ,
+                                  style: TextStyle(
+                                    color: colorRed,
+                                  ),
+                                ),
+                              ],
+                            )
+                        ],
                       ),
                       SizedBox(
                         height: height * .02,
@@ -214,12 +229,24 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             Flexible(
                               child: TextFormField(
-                                // controller: firstNameController,
-                                keyboardType: TextInputType.text,
+                                obscureText: isPasswordVisible,
+                                controller: passwordController,
+                                keyboardType: TextInputType.visiblePassword,
                                 decoration: InputDecoration(
                                     hintText: 'Password',
                                     // prefixIcon: EvaIcons.emailOutline,
-
+                                    contentPadding: const EdgeInsets.fromLTRB(0.0, 20.0, 20.0, 13.0),
+                                    suffixIcon: IconButton(
+                                        splashColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        onPressed: () {
+                                          setState(() {
+                                            isPasswordVisible = !isPasswordVisible;
+                                          });
+                                        },
+                                        icon: isPasswordVisible
+                                            ? const Icon(EvaIcons.eyeOutline)
+                                            : const Icon(EvaIcons.eyeOffOutline)),
                                     hintStyle: TextStyle(
                                         color: colorGrey, fontSize: 15),
                                     border: InputBorder.none),
@@ -227,6 +254,31 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ],
                         ),
+                      ),
+
+                      Gap(height*.005),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (errorPassword)
+                            Row(
+                              children: [
+                                const Icon(
+                                  EvaIcons.checkmarkCircle,
+                                  color: Colors.red,
+                                ),
+                                SizedBox(
+                                  width: width * .02,
+                                ),
+                                Text(
+                                  'Password Can\'t be Empty' ,
+                                  style: TextStyle(
+                                    color: colorRed,
+                                  ),
+                                ),
+                              ],
+                            )
+                        ],
                       ),
                     ],
                   ),
@@ -267,36 +319,36 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                  onTap: (){
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                          return const HomeScreen();
-                        }));
-                  },
-                  // onTap: () {
-                  //   if (firstNameController.text.isEmpty) {
-                  //     setState(() {
-                  //       errorMessage = true;
-                  //       errorLessThen = false;
-                  //     });
-                  //   } else if (firstNameController.text.length <= 2) {
-                  //     setState(() {
-                  //       errorMessage = false;
-                  //       errorLessThen = true;
-                  //     });
-                  //   } else {
-                  //     setState(() {
-                  //       errorMessage = false;
-                  //       errorLessThen = false;
-                  //     });
-                  //     // PageRouteTransition.curve;
-                  //     // PageRouteTransition.push(context, MName(firstName: firstNameController.text,));
-                  //     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  //       return MName(firstName: firstNameController.text,
-                  //       );
-                  //     }));
-                  //   }
+                  // onTap: (){
+                  //   Navigator.push(context,
+                  //       MaterialPageRoute(builder: (context) {
+                  //         return const HomeScreen();
+                  //       }));
                   // },
+                  onTap: () {
+                    if (emailController.text.isEmpty) {
+                      setState(() {
+                        errorEmail = true;
+                        errorPassword = false;
+                      });
+                    } else if (passwordController.text.isEmpty) {
+                      setState(() {
+                        errorEmail = false;
+                        errorPassword = true;
+                      });
+                    } else {
+                      setState(() {
+                        errorMessage = false;
+                        errorPassword = false;
+                        errorEmail = false;
+                      });
+                      // PageRouteTransition.curve;
+                      // PageRouteTransition.push(context, MName(firstName: firstNameController.text,));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return const HomeScreen();
+                      }));
+                    }
+                  },
                 ),
                 SizedBox(
                   height: height * .01,
@@ -304,7 +356,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       'Don’t have and account?',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
