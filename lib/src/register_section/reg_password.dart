@@ -266,7 +266,6 @@ class _RegPasswordState extends State<RegPassword> {
                                           decoration: InputDecoration(
                                               hintText: 'Confirm Password',
                                               // prefixIcon: EvaIcons.emailOutline,
-
                                               hintStyle: TextStyle(color: colorGrey, fontSize: 15),
                                               border: InputBorder.none
                                           ),
