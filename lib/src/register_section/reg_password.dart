@@ -1,5 +1,6 @@
-import 'package:bingolearn/src/dashboard/home_screen.dart';
+
 import 'package:bingolearn/src/register_section/selection_screen.dart';
+import 'package:bingolearn/src/register_section/verify_email.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -362,7 +363,8 @@ class _RegPasswordState extends State<RegPassword> {
                     // PageRouteTransition.push(context, MName(firstName: firstNameController.text,));
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                          return const SelectionScreen();
+                          return const VerifyEmail();
+                          // return const SelectionScreen();
                         }));
                   }
                 },

@@ -1,4 +1,5 @@
 import 'package:bingolearn/src/register_section/reg_otp.dart';
+import 'package:bingolearn/src/register_section/reg_user.dart';
 import 'package:bingolearn/src/tools/colors.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -262,7 +263,7 @@ class _RegEmailState extends State<RegEmail> {
                     errorMessage = false;
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                          return const RegOtp();
+                          return const RegUser();
                         }));
                   }
                 },

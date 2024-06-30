@@ -24,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   var errorEmail = false;
   var errorPassword = false;
   var errorMessage = false;
+  var errorInvalidEmail = false;
 
   //less then <2 Error Message
   var errorLessThen = false;
@@ -202,6 +203,29 @@ class _LoginScreenState extends State<LoginScreen> {
                             )
                         ],
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (errorInvalidEmail)
+                            Row(
+                              children: [
+                                const Icon(
+                                  EvaIcons.checkmarkCircle,
+                                  color: Colors.red,
+                                ),
+                                SizedBox(
+                                  width: width * .02,
+                                ),
+                                Text(
+                                  'Invalid Email' ,
+                                  style: TextStyle(
+                                    color: colorRed,
+                                  ),
+                                ),
+                              ],
+                            )
+                        ],
+                      ),
                       SizedBox(
                         height: height * .02,
                       ),
@@ -319,34 +343,39 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                  // onTap: (){
-                  //   Navigator.push(context,
-                  //       MaterialPageRoute(builder: (context) {
-                  //         return const HomeScreen();
-                  //       }));
-                  // },
                   onTap: () {
                     if (emailController.text.isEmpty) {
                       setState(() {
                         errorEmail = true;
+                        errorPassword = false;
+                        errorInvalidEmail = false;
+                      });
+                    } else if (!emailController.text.contains('@')) {
+                      setState(() {
+                        errorInvalidEmail = true;
+                        errorEmail = false;
                         errorPassword = false;
                       });
                     } else if (passwordController.text.isEmpty) {
                       setState(() {
                         errorEmail = false;
                         errorPassword = true;
+                        errorInvalidEmail = false;
                       });
                     } else {
                       setState(() {
                         errorMessage = false;
                         errorPassword = false;
                         errorEmail = false;
+                        errorInvalidEmail = false;
                       });
                       // PageRouteTransition.curve;
                       // PageRouteTransition.push(context, MName(firstName: firstNameController.text,));
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return const HomeScreen();
-                      }));
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomeScreen()),
+                              (route) => false);
                     }
                   },
                 ),
