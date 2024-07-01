@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:bingolearn/src/register_section/account_setup.dart';
 import 'package:bingolearn/src/register_section/reg_email.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 
+import '../../core/api_section/api_service.dart';
+import '../../core/models/login_request.dart';
 import '../dashboard/home_screen.dart';
 import '../tools/colors.dart';
 
@@ -28,6 +33,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //less then <2 Error Message
   var errorLessThen = false;
+
+
+//progress indicator
+  bool isLoading = false;
+
+  //Timer Circle indication
+  Timer _timer = Timer(const Duration(), () {});
+
+  @override
+  void dispose() {
+    _timer.cancel(); // Cancel the timer when the widget is disposed
+    super.dispose();
+  }
 
 
   //controllers
@@ -327,57 +345,65 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: height * .01,
                 ),
                 GestureDetector(
-                  child: Container(
+                  child:  SizedBox(
                     height: height * 0.06,
-                    // margin: EdgeInsets.only(
-                    //   left: width * 0.05,
-                    //   right: width * 0.05,
-                    // ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: colorMain),
-                    child: Center(
-                      child: Text(
+                    width: width ,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          backgroundColor: colorMain),
+                      child: isLoading
+                          ? Transform.scale(
+                        scale: 0.7,
+                        child: CircularProgressIndicator(
+                          backgroundColor: colorPrimary.withOpacity(0.3),
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            colorPrimary, //<-- SEE HERE
+                          ),
+                        ),
+                      )
+                          : const Text(
                         'Login',
-                        style: TextStyle(color: colorPrimary),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
+                      onPressed: () {
+                        if (emailController.text.isEmpty) {
+                          setState(() {
+                            errorEmail = true;
+                            errorPassword = false;
+                            errorInvalidEmail = false;
+                          });
+                        } else if (!emailController.text.contains('@')) {
+                          setState(() {
+                            errorInvalidEmail = true;
+                            errorEmail = false;
+                            errorPassword = false;
+                          });
+                        } else if (passwordController.text.isEmpty) {
+                          setState(() {
+                            errorEmail = false;
+                            errorPassword = true;
+                            errorInvalidEmail = false;
+                          });
+                        } else {
+                          setState(() {
+                            errorMessage = false;
+                            errorPassword = false;
+                            errorEmail = false;
+                            errorInvalidEmail = false;
+                          });
+                          loginSubmit();
+                        }
+                      },
                     ),
                   ),
-                  onTap: () {
-                    if (emailController.text.isEmpty) {
-                      setState(() {
-                        errorEmail = true;
-                        errorPassword = false;
-                        errorInvalidEmail = false;
-                      });
-                    } else if (!emailController.text.contains('@')) {
-                      setState(() {
-                        errorInvalidEmail = true;
-                        errorEmail = false;
-                        errorPassword = false;
-                      });
-                    } else if (passwordController.text.isEmpty) {
-                      setState(() {
-                        errorEmail = false;
-                        errorPassword = true;
-                        errorInvalidEmail = false;
-                      });
-                    } else {
-                      setState(() {
-                        errorMessage = false;
-                        errorPassword = false;
-                        errorEmail = false;
-                        errorInvalidEmail = false;
-                      });
-                      // PageRouteTransition.curve;
-                      // PageRouteTransition.push(context, MName(firstName: firstNameController.text,));
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomeScreen()),
-                              (route) => false);
-                    }
-                  },
+
                 ),
                 SizedBox(
                   height: height * .01,
@@ -411,5 +437,40 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       )),
     );
+  }
+
+  loginSubmit() {
+    setState(() {
+      isLoading = true;
+      errorMessage = false;
+    });
+    LoginRequest model = LoginRequest(
+        email: emailController.text, password: passwordController.text);
+
+    ApiService.login(model).then((response) => {
+      if (response)
+        {
+          print(response),
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const AccountSetup()),
+                  (route) => false),
+          setState(() {
+            isLoading = false;
+          })
+        }
+      else
+        {
+          setState(() {
+            errorMessage = true;
+          })
+        }
+    });
+    _timer = Timer(const Duration(seconds: 5), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 }
