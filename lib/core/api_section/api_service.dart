@@ -16,13 +16,13 @@ class ApiService{
   static Future<bool> login(LoginRequest model) async {
     Map<String, String> loginRequestHeader = {
       'Content-type': 'application/json',
-      'ACCESS-KEY': 'BlQeWZ_Kf14SRUUJS92kk'
+      'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwbXFqcnh4ZWdkcmdmaGZ6YnhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk2NjgyMjAsImV4cCI6MjAzNTI0NDIyMH0.2-8VUqjYHxxXThIBmKgsCN1yStSN-XwKiorcpbitUHk'
     };
 
-    var url = Uri.https(Config.apiAuth, Config.loginEndPoint);
+    var url = Uri.parse('https://ypmqjrxxegdrgfhfzbxj.supabase.co/auth/v1/token?grant_type=password');
+    debugPrint(url.toString());
     var response = await client.post(url,
         headers: loginRequestHeader, body: jsonEncode(model.toJson()));
-
     if (response.statusCode == 200) {
       debugPrint(response.body);
       await SharedService.setLoginDetails(loginResponseJson(response.body));

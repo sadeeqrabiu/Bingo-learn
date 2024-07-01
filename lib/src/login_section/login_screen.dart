@@ -450,7 +450,7 @@ class _LoginScreenState extends State<LoginScreen> {
     ApiService.login(model).then((response) => {
       if (response)
         {
-          print(response),
+          // print(response),
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
