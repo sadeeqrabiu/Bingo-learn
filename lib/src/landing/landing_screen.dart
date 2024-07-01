@@ -32,7 +32,7 @@ class _LandingScreenState extends State<LandingScreen> {
         ),
         Container(
           margin: EdgeInsets.only(
-              top: height * .1, left: width * 0.04, right: width * 0.04),
+              top: height * .1, left: width * 0.06, right: width * 0.04),
           child: Column(
             children: [
               const Row(
@@ -88,15 +88,15 @@ class _LandingScreenState extends State<LandingScreen> {
                   SizedBox(
                       width: width*.9,
                       child: const Text(
-                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla turpis sapien, dignissim vel dolor aliquet, dictum egestas lectus. ', style: TextStyle(color: Colors.white), ))
+                          'Dive into personalized lessons, interactive games, and real-time learning with AI. Experience fun and effective language learning anytime, anywhere.', style: TextStyle(color: Colors.white), ))
                 ],
               ),
 
               GestureDetector(
                 child: Container(
                   margin: EdgeInsets.only(top: height*.12),
-                  height: height*.06,
-                  width: width,
+                  height: height*.05,
+                  width: width*.6,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white,

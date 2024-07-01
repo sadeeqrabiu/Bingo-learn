@@ -1,4 +1,5 @@
 import 'package:bingolearn/src/dashboard/home_screen.dart';
+import 'package:bingolearn/src/register_section/account_setup.dart';
 import 'package:flutter/material.dart';
 
 import '../tools/colors.dart';
@@ -138,7 +139,7 @@ class _LearningGoalState extends State<LearningGoal> {
                     onTap: (){
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                            return const HomeScreen();
+                            return const AccountSetup();
                           }));
                     },
 

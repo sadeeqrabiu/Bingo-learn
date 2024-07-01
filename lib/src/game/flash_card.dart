@@ -1,19 +1,19 @@
-import 'package:bingolearn/src/game/flash_card.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
 import '../tools/colors.dart';
 
-class GameStart extends StatefulWidget {
-  const GameStart({super.key});
+
+
+class FlashCard extends StatefulWidget {
+  const FlashCard({super.key});
 
   @override
-  State<GameStart> createState() => _GameStartState();
+  State<FlashCard> createState() => _FlashCardState();
 }
 
-class _GameStartState extends State<GameStart> {
+class _FlashCardState extends State<FlashCard> {
   @override
   Widget build(BuildContext context) {
     //Media Query
@@ -49,7 +49,7 @@ class _GameStartState extends State<GameStart> {
                       children: [
                         GestureDetector(
                           child: Icon(
-                            EvaIcons.arrowIosBackOutline,
+                            EvaIcons.close,
                             color: colorPrimary,
                           ),
                           onTap: () {
@@ -57,7 +57,7 @@ class _GameStartState extends State<GameStart> {
                           },
                         ),
                         Text(
-                          'Game',
+                          'Flash Card',
                           style: TextStyle(
                               color: colorPrimary, fontWeight: FontWeight.bold),
                         ),
@@ -67,50 +67,51 @@ class _GameStartState extends State<GameStart> {
                       ],
                     ),
 
-                    Gap(height * .02),
-                    Column(
-                      children: [
-                        SizedBox(
-                          height: height * 0.15,
-                          child: SvgPicture.asset(
-                            'assets/icons/cardIcon.svg',
+                    Gap(height*.04),
+                    Padding(
+                      padding: EdgeInsets.only(left: width*.06, right: width*.06),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Text('cards:', style: TextStyle(color: colorPrimary, fontSize: 15, fontWeight: FontWeight.bold),),
+                              Text(' 10/10', style: TextStyle(color: colorPrimary),)
+                            ],
                           ),
-                        ),
-                        Text(
-                          'Flash Card Game',
-                          style: TextStyle(
-                              color: colorPrimary,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15),
-                        ),
-                      ],
-                    ),
-                    Gap(height * .02),
-                    Text(
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla turpis sapien, dignissim vel dolor aliquet, dictum egestas lectus. ',
-                      style: TextStyle(color: colorPrimary),
+                          Row(
+                            children: [
+                              Text('Time:', style: TextStyle(color: colorPrimary, fontSize: 15, fontWeight: FontWeight.bold),),
+                              Text('00:30', style: TextStyle(color: colorPrimary),)
+                            ],
+                          ),
+
+                        ],
+                      ),
                     ),
 
-                    Gap(height*.05),
-                    GestureDetector(
-                      child: Container(
-                        height: height*.04,
-                        width: width*.8,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: colorPrimary
-                        ),
-                        child: const Center(
-                          child: Text('Start Game'),
-                        ),
+                    Gap(height*.04),
+                    Center(
+                      child: SizedBox(
+                        width: width*.5,
+                          child: Text('Lorem ipsum dolor sit amet, ___________lectus.', style: TextStyle(color: colorPrimary),)),
+                    ),
+
+                    //Card section
+
+                    Gap(height*.02),
+                    Container(
+                      height: height*.04,
+                      width: width*.4,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: colorGrey.withOpacity(0.2),
                       ),
-                      onTap: (){
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                              return const FlashCard();
-                            }));
-                      },
+                      child: Center(
+                        child: Text('Select Card', style: TextStyle(color: colorPrimary),),
+                      ),
                     )
+
                   ],
                 ))
           ],

@@ -44,5 +44,5 @@ This will also occur when Flutter is upgraded (e.g. by running the `flutter
 upgrade` command).
 
 ## About Project -  BingoLearn
-A language learning Mobile Application With Gemini - Vertex AI
+A language learning Mobile Application With Gemini -- Vertex AI
 

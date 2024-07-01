@@ -1,7 +1,9 @@
-import 'package:bingolearn/src/dashboard/home_screen.dart';
+
 import 'package:bingolearn/src/register_section/selection_screen.dart';
+import 'package:bingolearn/src/register_section/verify_email.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 import '../tools/colors.dart';
 
@@ -14,11 +16,25 @@ class RegPassword extends StatefulWidget {
 }
 
 class _RegPasswordState extends State<RegPassword> {
+
+  //password foiled visibility
+  bool isPasswordVisible = true;
+
+
   //Error Message
   var errorMessage = false;
+  var errorOnePassword = false;
+  var errorTwoPassword = false;
+
 
   //less then <2 Error Message
   var errorLessThen = false;
+
+  //
+  TextEditingController passController = TextEditingController();
+
+  TextEditingController confirmPassController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     //MediaQuery
@@ -107,6 +123,7 @@ class _RegPasswordState extends State<RegPassword> {
                                       fontWeight: FontWeight.bold, fontSize: 25)),
                             ],
                           ),
+
                           SizedBox(
                             width: width * 1.0,
                             child: Text(
@@ -119,6 +136,7 @@ class _RegPasswordState extends State<RegPassword> {
                           SizedBox(
                             height: height * 0.01,
                           ),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -133,32 +151,9 @@ class _RegPasswordState extends State<RegPassword> {
                                       width: width * .02,
                                     ),
                                     Text(
-                                      'Field can\'t be empty',
+                                      'Password not Match',
                                       style: TextStyle(
-                                        color: colorBlack,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (errorLessThen)
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      EvaIcons.checkmarkCircle,
-                                      color: Colors.red,
-                                    ),
-                                    SizedBox(
-                                      width: width * .02,
-                                    ),
-                                    Text(
-                                      'Invalid FirstName',
-                                      style: TextStyle(
-                                        color: colorBlack,
+                                        color: colorRed,
                                       ),
                                     ),
                                   ],
@@ -193,11 +188,24 @@ class _RegPasswordState extends State<RegPassword> {
                                       SizedBox(width: width*.02,),
                                       Flexible(
                                         child: TextFormField(
-                                          // controller: firstNameController,
-                                          keyboardType: TextInputType.text,
+                                          obscureText: isPasswordVisible,
+                                          controller: passController,
+                                          keyboardType: TextInputType.visiblePassword,
                                           decoration: InputDecoration(
                                               hintText: 'password',
                                               // prefixIcon: EvaIcons.emailOutline,
+                                              contentPadding: const EdgeInsets.fromLTRB(0.0, 20.0, 20.0, 13.0),
+                                              suffixIcon: IconButton(
+                                                  splashColor: Colors.transparent,
+                                                  highlightColor: Colors.transparent,
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      isPasswordVisible = !isPasswordVisible;
+                                                    });
+                                                  },
+                                                  icon: isPasswordVisible
+                                                      ? const Icon(EvaIcons.eyeOutline)
+                                                      : const Icon(EvaIcons.eyeOffOutline)),
                                               hintStyle: TextStyle(color: colorGrey, fontSize: 15),
                                               border: InputBorder.none
                                           ),
@@ -205,6 +213,30 @@ class _RegPasswordState extends State<RegPassword> {
                                       ),
                                     ],
                                   ),
+                                ),
+                                Gap(height*.005),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (errorOnePassword)
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            EvaIcons.checkmarkCircle,
+                                            color: Colors.red,
+                                          ),
+                                          SizedBox(
+                                            width: width * .02,
+                                          ),
+                                          Text(
+                                            'Field can\'t be empty',
+                                            style: TextStyle(
+                                              color: colorRed,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                  ],
                                 ),
                                 SizedBox(height: height*.02,),
                                 Container(
@@ -229,12 +261,12 @@ class _RegPasswordState extends State<RegPassword> {
                                       SizedBox(width: width*.02,),
                                       Flexible(
                                         child: TextFormField(
-                                          // controller: firstNameController,
-                                          keyboardType: TextInputType.text,
+                                          obscureText: isPasswordVisible,
+                                          controller: confirmPassController,
+                                          keyboardType: TextInputType.visiblePassword,
                                           decoration: InputDecoration(
                                               hintText: 'Confirm Password',
                                               // prefixIcon: EvaIcons.emailOutline,
-
                                               hintStyle: TextStyle(color: colorGrey, fontSize: 15),
                                               border: InputBorder.none
                                           ),
@@ -242,6 +274,30 @@ class _RegPasswordState extends State<RegPassword> {
                                       ),
                                     ],
                                   ),
+                                ),
+                                Gap(height*.005),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (errorTwoPassword)
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            EvaIcons.checkmarkCircle,
+                                            color: Colors.red,
+                                          ),
+                                          SizedBox(
+                                            width: width * .02,
+                                          ),
+                                          Text(
+                                            'Field can\'t be empty',
+                                            style: TextStyle(
+                                              color: colorRed,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                  ],
                                 ),
 
                               ],
@@ -277,36 +333,41 @@ class _RegPasswordState extends State<RegPassword> {
                     ),
                   ),
                 ),
-                onTap: (){
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) {
-                        return const SelectionScreen();
-                      }));
+
+                onTap: () {
+                  if (passController.text.isEmpty ) {
+                    setState(() {
+                      errorOnePassword = true;
+                      errorMessage = false;
+                      errorTwoPassword = false;
+                    });
+                  }  else if (confirmPassController.text.isEmpty ) {
+                    setState(() {
+                      errorMessage = false;
+                      errorOnePassword = false;
+                      errorTwoPassword = true;
+                    });
+                  } else if (passController.text != confirmPassController.text ) {
+                    setState(() {
+                      errorMessage = true;
+                      errorOnePassword = false;
+                      errorTwoPassword = false;
+                    });
+                  } else {
+                    setState(() {
+                      errorMessage = false;
+                      errorOnePassword = false;
+                      errorTwoPassword = false;
+                    });
+                    // PageRouteTransition.curve;
+                    // PageRouteTransition.push(context, MName(firstName: firstNameController.text,));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                          return const VerifyEmail();
+                          // return const SelectionScreen();
+                        }));
+                  }
                 },
-                // onTap: () {
-                //   if (firstNameController.text.isEmpty) {
-                //     setState(() {
-                //       errorMessage = true;
-                //       errorLessThen = false;
-                //     });
-                //   } else if (firstNameController.text.length <= 2) {
-                //     setState(() {
-                //       errorMessage = false;
-                //       errorLessThen = true;
-                //     });
-                //   } else {
-                //     setState(() {
-                //       errorMessage = false;
-                //       errorLessThen = false;
-                //     });
-                //     // PageRouteTransition.curve;
-                //     // PageRouteTransition.push(context, MName(firstName: firstNameController.text,));
-                //     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                //       return MName(firstName: firstNameController.text,
-                //       );
-                //     }));
-                //   }
-                // },
               ),
               SizedBox(
                 height: height * 0.02,

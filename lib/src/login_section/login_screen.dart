@@ -1,9 +1,16 @@
+import 'dart:async';
+
+import 'package:bingolearn/src/register_section/account_setup.dart';
 import 'package:bingolearn/src/register_section/reg_email.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:gap/gap.dart';
 
+import '../../core/api_section/api_service.dart';
+import '../../core/local_store/shared_service.dart';
+import '../../core/models/login_request.dart';
 import '../dashboard/home_screen.dart';
 import '../tools/colors.dart';
 
@@ -15,20 +22,45 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  //password foiled visibility
+  bool isPasswordVisible = true;
+
   //Error Message
+  var errorEmail = false;
+  var errorPassword = false;
   var errorMessage = false;
+  var errorInvalidEmail = false;
 
   //less then <2 Error Message
   var errorLessThen = false;
+
+
+//progress indicator
+  bool isLoading = false;
+
+  //Timer Circle indication
+  Timer _timer = Timer(const Duration(), () {});
+
+  @override
+  void dispose() {
+    _timer.cancel(); // Cancel the timer when the widget is disposed
+    super.dispose();
+  }
+
+
+
+  //controllers
+  TextEditingController emailController = TextEditingController();
+
+  TextEditingController passwordController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
     //MediaQuery
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
-
-    //check keyboard
-    final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
 
     return Scaffold(
       backgroundColor: colorPrimary,
@@ -111,44 +143,23 @@ class _LoginScreenState extends State<LoginScreen> {
                             width: width * .02,
                           ),
                           Text(
-                            'Field can\'t be empty',
+                            'Invalid login details',
                             style: TextStyle(
-                              color: colorBlack,
+                              color: colorRed,
                             ),
                           ),
                         ],
                       )
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (errorLessThen)
-                      Row(
-                        children: [
-                          const Icon(
-                            EvaIcons.checkmarkCircle,
-                            color: Colors.red,
-                          ),
-                          SizedBox(
-                            width: width * .02,
-                          ),
-                          Text(
-                            'Invalid FirstName',
-                            style: TextStyle(
-                              color: colorBlack,
-                            ),
-                          ),
-                        ],
-                      )
-                  ],
-                ),
+
                 Form(
                   child: Column(
                     children: [
                       SizedBox(
                         height: height * 0.04,
                       ),
+
                       Container(
                         height: height * .06,
                         width: width,
@@ -171,9 +182,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             SizedBox(
                               width: width * .02,
                             ),
+
                             Flexible(
                               child: TextFormField(
-                                // controller: firstNameController,
+                                controller: emailController,
                                 keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
                                     hintText: 'Email',
@@ -186,6 +198,53 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ],
                         ),
+                      ),
+                      Gap(height*.005),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (errorEmail)
+                            Row(
+                              children: [
+                                const Icon(
+                                  EvaIcons.checkmarkCircle,
+                                  color: Colors.red,
+                                ),
+                                SizedBox(
+                                  width: width * .02,
+                                ),
+                                Text(
+                                  'Email Can\'t be Empty' ,
+                                  style: TextStyle(
+                                    color: colorRed,
+                                  ),
+                                ),
+                              ],
+                            )
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (errorInvalidEmail)
+                            Row(
+                              children: [
+                                const Icon(
+                                  EvaIcons.checkmarkCircle,
+                                  color: Colors.red,
+                                ),
+                                SizedBox(
+                                  width: width * .02,
+                                ),
+                                Text(
+                                  'Invalid Email' ,
+                                  style: TextStyle(
+                                    color: colorRed,
+                                  ),
+                                ),
+                              ],
+                            )
+                        ],
                       ),
                       SizedBox(
                         height: height * .02,
@@ -214,12 +273,24 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             Flexible(
                               child: TextFormField(
-                                // controller: firstNameController,
-                                keyboardType: TextInputType.text,
+                                obscureText: isPasswordVisible,
+                                controller: passwordController,
+                                keyboardType: TextInputType.visiblePassword,
                                 decoration: InputDecoration(
                                     hintText: 'Password',
                                     // prefixIcon: EvaIcons.emailOutline,
-
+                                    contentPadding: const EdgeInsets.fromLTRB(0.0, 20.0, 20.0, 13.0),
+                                    suffixIcon: IconButton(
+                                        splashColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        onPressed: () {
+                                          setState(() {
+                                            isPasswordVisible = !isPasswordVisible;
+                                          });
+                                        },
+                                        icon: isPasswordVisible
+                                            ? const Icon(EvaIcons.eyeOutline)
+                                            : const Icon(EvaIcons.eyeOffOutline)),
                                     hintStyle: TextStyle(
                                         color: colorGrey, fontSize: 15),
                                     border: InputBorder.none),
@@ -227,6 +298,31 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ],
                         ),
+                      ),
+
+                      Gap(height*.005),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (errorPassword)
+                            Row(
+                              children: [
+                                const Icon(
+                                  EvaIcons.checkmarkCircle,
+                                  color: Colors.red,
+                                ),
+                                SizedBox(
+                                  width: width * .02,
+                                ),
+                                Text(
+                                  'Password Can\'t be Empty' ,
+                                  style: TextStyle(
+                                    color: colorRed,
+                                  ),
+                                ),
+                              ],
+                            )
+                        ],
                       ),
                     ],
                   ),
@@ -238,65 +334,86 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: height * .01,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      'Forgot password',
-                      style: TextStyle(color: colorBlue),
-                    )
-                  ],
+                GestureDetector(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Forgot password',
+                        style: TextStyle(color: colorBlue),
+                      )
+                    ],
+                  ),
+                  onTap: (){
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                          return const RegEmail();
+                        }));
+                  },
                 ),
                 SizedBox(
                   height: height * .01,
                 ),
                 GestureDetector(
-                  child: Container(
+                  child:  SizedBox(
                     height: height * 0.06,
-                    // margin: EdgeInsets.only(
-                    //   left: width * 0.05,
-                    //   right: width * 0.05,
-                    // ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: colorMain),
-                    child: Center(
-                      child: Text(
+                    width: width ,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          backgroundColor: colorMain),
+                      child: isLoading
+                          ? Transform.scale(
+                        scale: 0.7,
+                        child: CircularProgressIndicator(
+                          backgroundColor: colorPrimary.withOpacity(0.3),
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            colorPrimary, //<-- SEE HERE
+                          ),
+                        ),
+                      )
+                          : const Text(
                         'Login',
-                        style: TextStyle(color: colorPrimary),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
+                      onPressed: () {
+                        if (emailController.text.isEmpty) {
+                          setState(() {
+                            errorEmail = true;
+                            errorPassword = false;
+                            errorInvalidEmail = false;
+                          });
+                        } else if (!emailController.text.contains('@')) {
+                          setState(() {
+                            errorInvalidEmail = true;
+                            errorEmail = false;
+                            errorPassword = false;
+                          });
+                        } else if (passwordController.text.isEmpty) {
+                          setState(() {
+                            errorEmail = false;
+                            errorPassword = true;
+                            errorInvalidEmail = false;
+                          });
+                        } else {
+                          setState(() {
+                            errorMessage = false;
+                            errorPassword = false;
+                            errorEmail = false;
+                            errorInvalidEmail = false;
+                          });
+                          loginSubmit();
+                        }
+                      },
                     ),
                   ),
-                  onTap: (){
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                          return const HomeScreen();
-                        }));
-                  },
-                  // onTap: () {
-                  //   if (firstNameController.text.isEmpty) {
-                  //     setState(() {
-                  //       errorMessage = true;
-                  //       errorLessThen = false;
-                  //     });
-                  //   } else if (firstNameController.text.length <= 2) {
-                  //     setState(() {
-                  //       errorMessage = false;
-                  //       errorLessThen = true;
-                  //     });
-                  //   } else {
-                  //     setState(() {
-                  //       errorMessage = false;
-                  //       errorLessThen = false;
-                  //     });
-                  //     // PageRouteTransition.curve;
-                  //     // PageRouteTransition.push(context, MName(firstName: firstNameController.text,));
-                  //     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  //       return MName(firstName: firstNameController.text,
-                  //       );
-                  //     }));
-                  //   }
-                  // },
+
                 ),
                 SizedBox(
                   height: height * .01,
@@ -304,7 +421,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       'Don’t have and account?',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
@@ -314,7 +431,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: colorBlue),
                     ),
+
                       onTap: (){
+                        // SharedService.logout(context);
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                               return const RegEmail();
@@ -330,5 +449,40 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       )),
     );
+  }
+
+  loginSubmit() {
+    setState(() {
+      isLoading = true;
+      errorMessage = false;
+    });
+    LoginRequest model = LoginRequest(
+        email: emailController.text, password: passwordController.text);
+
+    ApiService.login(model).then((response) => {
+      if (response)
+        {
+          // print(response),
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const AccountSetup()),
+                  (route) => false),
+          setState(() {
+            isLoading = false;
+          })
+        }
+      else
+        {
+          setState(() {
+            errorMessage = true;
+          })
+        }
+    });
+    _timer = Timer(const Duration(seconds: 5), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 }
