@@ -1,6 +1,8 @@
 
 import 'dart:convert';
 
+import 'package:api_cache_manager/models/cache_db_model.dart';
+import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../local_store/shared_service.dart';
@@ -19,8 +21,7 @@ class ApiService{
       'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwbXFqcnh4ZWdkcmdmaGZ6YnhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk2NjgyMjAsImV4cCI6MjAzNTI0NDIyMH0.2-8VUqjYHxxXThIBmKgsCN1yStSN-XwKiorcpbitUHk'
     };
 
-    var url = Uri.parse('https://ypmqjrxxegdrgfhfzbxj.supabase.co/auth/v1/token?grant_type=password');
-    debugPrint(url.toString());
+    var url = Uri.parse( Config.apiHttp + Config.apiAuth + Config.loginEndPoint);
     var response = await client.post(url,
         headers: loginRequestHeader, body: jsonEncode(model.toJson()));
     if (response.statusCode == 200) {

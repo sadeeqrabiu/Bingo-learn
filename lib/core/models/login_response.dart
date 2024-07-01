@@ -1,16 +1,17 @@
 import 'dart:convert';
 
-LoginResponse loginResponseJson(String str) =>
-    LoginResponse.fromJson(json.decode(str));
+import 'package:flutter/cupertino.dart';
+LoginResponseModel loginResponseJson(String str) =>
+    LoginResponseModel.fromJson(json.decode(str));
 
-class LoginResponse {
-  LoginResponse({
+class LoginResponseModel {
+  LoginResponseModel({
     required this.token,
   });
   late final String token;
 
-  LoginResponse.fromJson(Map<String, dynamic> json){
-    token = json['token'];
+  LoginResponseModel.fromJson(Map<String, dynamic> json){
+    token = json['access_token'];
   }
 
   Map<String, dynamic> toJson() {

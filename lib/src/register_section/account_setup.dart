@@ -1,6 +1,8 @@
+import 'package:bingolearn/core/models/login_response.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../core/local_store/shared_service.dart';
 import '../tools/colors.dart';
 
 
@@ -12,6 +14,19 @@ class AccountSetup extends StatefulWidget {
 }
 
 class _AccountSetupState extends State<AccountSetup> {
+
+
+  //Calling model offline
+  LoginResponseModel loginResponseModel = LoginResponseModel(token: '');
+
+  @override
+  void initState() {
+    super.initState();
+    // checkIsUserUpdated();
+    fetchData();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     //MediaQuery
@@ -37,11 +52,19 @@ class _AccountSetupState extends State<AccountSetup> {
               const Column(
                 children: [
                   Text('Please wait while we',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                  Text('set up your account', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+                  Text('set up your account', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+
                 ],
               ),
             ],
           )),
     );
+  }
+
+  void fetchData() async {
+    var response = await SharedService.loginDetails();
+    setState(() {
+      loginResponseModel = LoginResponseModel.fromJson(response!.toJson());
+    });
   }
 }

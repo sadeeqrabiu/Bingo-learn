@@ -9,6 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 
 import '../../core/api_section/api_service.dart';
+import '../../core/local_store/shared_service.dart';
 import '../../core/models/login_request.dart';
 import '../dashboard/home_screen.dart';
 import '../tools/colors.dart';
@@ -46,6 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _timer.cancel(); // Cancel the timer when the widget is disposed
     super.dispose();
   }
+
 
 
   //controllers
@@ -332,14 +334,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: height * .01,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      'Forgot password',
-                      style: TextStyle(color: colorBlue),
-                    )
-                  ],
+                GestureDetector(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Forgot password',
+                        style: TextStyle(color: colorBlue),
+                      )
+                    ],
+                  ),
+                  onTap: (){
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                          return const RegEmail();
+                        }));
+                  },
                 ),
                 SizedBox(
                   height: height * .01,
@@ -421,7 +431,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: colorBlue),
                     ),
+
                       onTap: (){
+                        // SharedService.logout(context);
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                               return const RegEmail();
