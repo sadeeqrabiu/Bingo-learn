@@ -10,7 +10,7 @@ import 'package:gap/gap.dart';
 
 import '../../core/api_section/api_service.dart';
 import '../../core/local_store/shared_service.dart';
-import '../../core/models/login_request.dart';
+import '../../core/models/login/login_request.dart';
 import '../dashboard/home_screen.dart';
 import '../tools/colors.dart';
 
@@ -450,6 +450,7 @@ class _LoginScreenState extends State<LoginScreen> {
       )),
     );
   }
+
 
   loginSubmit() {
     setState(() {

@@ -262,9 +262,8 @@ class _RegEmailState extends State<RegEmail> {
                   } else {
                     errorMessage = false;
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                          return const RegUser();
-                        }));
+                        _createRoute()
+                    );
                   }
                 },
               ),
@@ -273,6 +272,26 @@ class _RegEmailState extends State<RegEmail> {
               ),
             ],
           )),
+    );
+  }
+
+
+  //route
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>  RegUser(email: emailController.text,),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 0.0);
+        const end = Offset.zero;
+        const curve = Curves.elasticOut;
+
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
     );
   }
 }

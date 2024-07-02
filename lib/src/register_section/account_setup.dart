@@ -1,4 +1,4 @@
-import 'package:bingolearn/core/models/login_response.dart';
+import 'package:bingolearn/core/models/login/login_response.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 

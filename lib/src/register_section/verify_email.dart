@@ -27,7 +27,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
 
   checkTime() async {
     // Simulate a service call
-    await Future.delayed(const Duration(seconds: 20), () {
+    await Future.delayed(const Duration(seconds: 10), () {
       setState(() {
         verifyEmail = true;
       });

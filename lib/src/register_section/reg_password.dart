@@ -9,7 +9,20 @@ import '../tools/colors.dart';
 
 
 class RegPassword extends StatefulWidget {
-  const RegPassword({super.key});
+  const RegPassword({
+    Key ? key,
+    required this.firstName,
+    required this.middleName,
+    required this.lastName,
+    required this.email,
+  }) : super (key: key);
+
+  final String? firstName;
+  final String? middleName;
+  final String? lastName;
+  final String? email;
+
+
 
   @override
   State<RegPassword> createState() => _RegPasswordState();
