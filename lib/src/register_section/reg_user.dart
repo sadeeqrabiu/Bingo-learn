@@ -21,6 +21,7 @@ class _RegUserState extends State<RegUser> {
 
   TextEditingController fNameController = TextEditingController();
   TextEditingController lNameController = TextEditingController();
+  TextEditingController mNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -224,7 +225,7 @@ class _RegUserState extends State<RegUser> {
                                   ),
                                   Flexible(
                                     child: TextFormField(
-                                      // controller: firstNameController,
+                                      controller: mNameController,
                                       keyboardType: TextInputType.text,
                                       decoration: InputDecoration(
                                           hintText: 'Middle Name',
@@ -270,7 +271,6 @@ class _RegUserState extends State<RegUser> {
                                       decoration: InputDecoration(
                                           hintText: 'Last Name',
                                           // prefixIcon: EvaIcons.emailOutline,
-
                                           hintStyle: TextStyle(
                                               color: colorGrey, fontSize: 15),
                                           border: InputBorder.none),
@@ -367,7 +367,7 @@ class _RegUserState extends State<RegUser> {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => RegPassword(
         firstName: fNameController.text,
-        middleName: lNameController.text,
+        middleName: mNameController.text,
         lastName: lNameController.text,
         email: widget.email,
       ),

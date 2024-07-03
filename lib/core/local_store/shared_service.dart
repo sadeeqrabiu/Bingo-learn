@@ -43,11 +43,11 @@ class SharedService{
   }
 
   //logic to get the data
-  static Future<LoginResponseModel?> getSignUpID() async {
+  static Future<SignUpResponseModel?> getSignUpID() async {
     var isKeyExit = await APICacheManager().isAPICacheKeyExist("signUp_Id");
     if (isKeyExit) {
       var cacheData = await APICacheManager().getCacheData("signUp_Id");
-      return loginResponseJson(cacheData.syncData);
+      return signUpResponseJson(cacheData.syncData);
     }
     return null;
   }

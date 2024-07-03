@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bingolearn/src/login_section/login_ac_setup.dart';
 import 'package:bingolearn/src/register_section/account_setup.dart';
 import 'package:bingolearn/src/register_section/reg_email.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -467,7 +468,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                  builder: (context) => const AccountSetup()),
+                  builder: (context) => const LoginAcSetup()),
                   (route) => false),
           setState(() {
             isLoading = false;

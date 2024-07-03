@@ -6,7 +6,9 @@ class Config{
   static const String apiHttp = "https://";
   static const String apiAuth = "ypmqjrxxegdrgfhfzbxj.supabase.co";
   static const String loginEndPoint = "/auth/v1/token?grant_type=password";
-  static const String signUpEndPoint = "/rest/v1/users";
+  static const String signUpEndPoint = "/auth/v1/signup";
+  static const String userDateEndPoint = '/rest/v1/users';
+  static const String allLanguageEndPoint = '/rest/v1/Languages?select=*';
 
 
 }
