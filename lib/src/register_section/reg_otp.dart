@@ -294,10 +294,10 @@ class _RegOtpState extends State<RegOtp> {
                         });
                       });
                       // print(widget.firstName + widget.middleName +  widget.lastName + widget.phoneNumber + widget.email + widget.gander);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                            return const RegUser();
-                          }));
+                      // Navigator.push(context,
+                      //     MaterialPageRoute(builder: (context) {
+                      //       return const RegUser();
+                      //     }));
                       // verifyOtp();
                     },
                   ),

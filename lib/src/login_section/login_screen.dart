@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bingolearn/src/login_section/login_ac_setup.dart';
 import 'package:bingolearn/src/register_section/account_setup.dart';
 import 'package:bingolearn/src/register_section/reg_email.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -10,7 +11,7 @@ import 'package:gap/gap.dart';
 
 import '../../core/api_section/api_service.dart';
 import '../../core/local_store/shared_service.dart';
-import '../../core/models/login_request.dart';
+import '../../core/models/login/login_request.dart';
 import '../dashboard/home_screen.dart';
 import '../tools/colors.dart';
 
@@ -451,6 +452,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+
   loginSubmit() {
     setState(() {
       isLoading = true;
@@ -466,7 +468,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                  builder: (context) => const AccountSetup()),
+                  builder: (context) => const LoginAcSetup()),
                   (route) => false),
           setState(() {
             isLoading = false;

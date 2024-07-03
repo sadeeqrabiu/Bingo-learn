@@ -9,34 +9,16 @@ import 'package:bingolearn/src/landing/landing_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../models/login_response.dart';
+import '../models/login/login_response.dart';
+import '../models/sign_up/sign_up_response.dart';
 
 class SharedService{
 
-
-  // static Future<void>  loginToken(LoginResponseModel model) async {
-  //   APICacheDBModel cacheDBModel = APICacheDBModel(key: "access_token", syncData: jsonEncode(model.toJson()));
-  //   await APICacheManager().addCacheData(cacheDBModel);
-  //   debugPrint('access Token: ${LoginResponseModel(token: "access_token")}');
-  // }
   static Future<void> setLoginDetails(LoginResponseModel model) async {
     APICacheDBModel cacheDBModel = APICacheDBModel(key: "access_token", syncData: jsonEncode(model.toJson()));
     await APICacheManager().addCacheData(cacheDBModel);
     debugPrint(cacheDBModel.toString());
   }
-  // static Future<void> setLoginDetails(LoginResponseModel model) async {
-  //   debugPrint("Key from setDetails : ${LoginResponseModel(token: "access_token")}");
-  //   APICacheDBModel cacheDBModel = APICacheDBModel(key: "access_token", syncData: jsonEncode(model.toJson()));
-  //   await APICacheManager().addCacheData(cacheDBModel);
-  // }
-  //setLoginDetail after login
-  // static Future<void> setLoginDetails(LoginResponse model) async {
-  //
-  //   debugPrint("Key from setDetails : ${LoginResponse(token: "access_token")}");
-  //   APICacheDBModel cacheDBModel =
-  //   APICacheDBModel(key: "access_token", syncData: jsonEncode(model.toJson()));
-  //   await APICacheManager().addCacheData(cacheDBModel);
-  // }
 
   static Future<bool> isLoggedIn() async {
     var isKeyExit = await APICacheManager().isAPICacheKeyExist("access_token");
@@ -52,6 +34,24 @@ class SharedService{
     }
     return null;
   }
+
+//save SignUp Id for user verification
+  static Future<void> signUpID(SignUpResponseModel model) async {
+    APICacheDBModel cacheDBModel = APICacheDBModel(key: "signUp_Id", syncData: jsonEncode(model.toJson()));
+    await APICacheManager().addCacheData(cacheDBModel);
+    debugPrint(cacheDBModel.toString());
+  }
+
+  //logic to get the data
+  static Future<SignUpResponseModel?> getSignUpID() async {
+    var isKeyExit = await APICacheManager().isAPICacheKeyExist("signUp_Id");
+    if (isKeyExit) {
+      var cacheData = await APICacheManager().getCacheData("signUp_Id");
+      return signUpResponseJson(cacheData.syncData);
+    }
+    return null;
+  }
+
 
 
 
