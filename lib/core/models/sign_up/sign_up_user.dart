@@ -1,5 +1,5 @@
-class UserDataModel {
-  UserDataModel({
+class SignUpUserModel {
+  SignUpUserModel({
     required this.firstName,
     required this.lastName,
     required this.middleName,
@@ -22,7 +22,7 @@ class UserDataModel {
 
 
 
-  UserDataModel.fromJson(Map<String, dynamic> json){
+  SignUpUserModel.fromJson(Map<String, dynamic> json){
     firstName = json['firstName'];
     lastName = json['lastName'];
     middleName = json['middleName'];
@@ -48,3 +48,4 @@ class UserDataModel {
     return data;
   }
 }
+

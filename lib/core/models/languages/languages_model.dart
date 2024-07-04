@@ -16,7 +16,7 @@ class LanguagesModel{
         flag: json['flag'] as String,
       );
   }
-  static List<LanguagesModel> labsFromSnapshot(List snapshot){
+  static List<LanguagesModel> languagesFromSnapshot(List snapshot){
     return snapshot.map((data){
       return LanguagesModel.fromJson(data);
     }).toList();

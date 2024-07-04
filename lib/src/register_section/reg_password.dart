@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bingolearn/core/api_section/api_service.dart';
 import 'package:bingolearn/src/register_section/account_setup.dart';
 import 'package:bingolearn/src/Languages/selection_screen.dart';
@@ -41,6 +43,25 @@ class _RegPasswordState extends State<RegPassword> {
 
   //progress indicator
   bool isLoading = false;
+
+
+
+  checkTime() async {
+    // Simulate a service call
+    await Future.delayed(const Duration(seconds: 5), () {
+     setState(() {
+       isLoading = false;
+     });
+    });
+  }
+
+
+  // @override
+  // void dispose() {
+  //   _timer.cancel(); // Cancel the timer when the widget is disposed
+  //   super.dispose();
+  // }
+
 
   //
   TextEditingController passController = TextEditingController();
@@ -344,6 +365,7 @@ class _RegPasswordState extends State<RegPassword> {
           SizedBox(
             height: height * 0.02,
           ),
+
           SizedBox(
             height: height * 0.06,
             width: width*.85,
@@ -396,8 +418,9 @@ class _RegPasswordState extends State<RegPassword> {
                     errorOnePassword = false;
                     errorTwoPassword = false;
                   });
+                  isLoading = true;
+                  // checkTime();
                   signUpUser();
-                  debugPrint(widget.email! + widget.firstName! + widget.lastName! + widget.middleName! + passController.text);
                 }
               },
             ),

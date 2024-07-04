@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../tools/colors.dart';
 
@@ -17,14 +18,26 @@ import '../tools/colors.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+
+  final double totalTime = 15.0; // 15 minutes as the total time
+  double timeSpent = 10.0; // Example: 10 minutes spent
+
+  // var time = 0.3;
+
   @override
   Widget build(BuildContext context) {
     //Media Query
+
+    double percent = timeSpent / totalTime;
+
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -78,7 +91,9 @@ class _HomeScreenState extends State<HomeScreen> {
                      Icon(EvaIcons.arrowIosDownward, color: colorPrimary,),
                       Gap(width*.15),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          Gap(width*.17),
                           SizedBox(
                             height: height * 0.03,
                             child: SvgPicture.asset(
@@ -91,18 +106,18 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizedBox(
                             height: height * 0.03,
                             child: SvgPicture.asset(
-                              'assets/icons/shieldIcon.svg',
-                            ),
-                          ),
-                          Gap(width*.01),
-                          Text('1/10', style: TextStyle(color: colorPrimary),),
-                          Gap(width*.05),
-                          SizedBox(
-                            height: height * 0.03,
-                            child: SvgPicture.asset(
                               'assets/icons/heartIcon.svg',
                             ),
                           ),
+
+                          // Text('1/10', style: TextStyle(color: colorPrimary),),
+                          // Gap(width*.05),
+                          // SizedBox(
+                          //   height: height * 0.03,
+                          //   child: SvgPicture.asset(
+                          //     'assets/icons/heartIcon.svg',
+                          //   ),
+                          // ),
                           Gap(width*.01),
                           Text('5', style: TextStyle(color: colorPrimary),),
 
@@ -129,21 +144,40 @@ class _HomeScreenState extends State<HomeScreen> {
                            crossAxisAlignment: CrossAxisAlignment.start,
                            mainAxisAlignment: MainAxisAlignment.center,
                            children: [
-                             Text('Learned Today', style: TextStyle(fontSize: 18, color: colorPrimary, fontWeight: FontWeight.bold),),
-                             Row(
-                               children: [
-                                 Text('10min/', style: TextStyle(fontSize: 18, color: colorPrimary, fontWeight: FontWeight.bold),),
-                                 Text('15min', style: TextStyle(fontSize: 15, color: colorYellow),),
-                               ],
-                             ),
-                             Container(
-                               height: height*.01,
-                               width: width*.45,
-                               decoration: BoxDecoration(
-                                 borderRadius: BorderRadius.circular(20),
-                                 color: colorPrimary
+                             Padding(
+                               padding: EdgeInsets.only(left: width*.02),
+                               child: Column(
+                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                 children: [
+                                   Text('Learned Today', style: TextStyle(fontSize: 18, color: colorPrimary, fontWeight: FontWeight.bold),),
+                                   Row(
+                                     children: [
+                                       Text('10min/', style: TextStyle(fontSize: 18, color: colorPrimary, fontWeight: FontWeight.bold),),
+                                       Text('15min', style: TextStyle(fontSize: 15, color: colorYellow),),
+                                     ],
+                                   ),
+                                 ],
                                ),
+                             ),
+
+
+                             LinearPercentIndicator(
+                               width: width*.45,
+                               lineHeight: height*.01,
+                               percent: percent,
+                               backgroundColor: colorPrimary,
+                               progressColor: colorYellow,
+                               barRadius: const Radius.circular(20),
+
                              )
+                             // Container(
+                             //   height: height*.01,
+                             //   width: width*.45,
+                             //   decoration: BoxDecoration(
+                             //     borderRadius: BorderRadius.circular(20),
+                             //     color: colorPrimary
+                             //   ),
+                             // )
                            ],
                          ),
                        ),

@@ -346,10 +346,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   onTap: (){
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                          return const RegEmail();
-                        }));
+                    SharedService.logout(context);
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context) {
+                    //       return const RegEmail();
+                    //     }));
                   },
                 ),
                 SizedBox(
@@ -414,7 +415,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     ),
                   ),
-
                 ),
                 SizedBox(
                   height: height * .01,
@@ -434,7 +434,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
 
                       onTap: (){
-                        // SharedService.logout(context);
+
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                               return const RegEmail();

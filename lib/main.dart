@@ -1,16 +1,28 @@
 import 'dart:io';
 
+import 'package:bingolearn/core/api_section/config.dart';
+import 'package:bingolearn/src/dashboard/home_screen.dart';
 import 'package:bingolearn/src/landing/landing_screen.dart';
 import 'package:bingolearn/src/Languages/selection_screen.dart';
+import 'package:bingolearn/src/login_section/login_screen.dart';
+import 'package:bingolearn/src/register_section/reg_password.dart';
+import 'package:bingolearn/src/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
-  runApp(const MyApp());
+  Gemini.init(apiKey: Config.GEMINI_AI_KEY);
+  runApp(const ProviderScope(child: MyApp()));
+
+
   // if (Platform.isAndroid || Platform.isIOS) {
   //   sqfliteFfiInit();
   //   databaseFactory = databaseFactoryFfi;
   // }
+
+
 }
 
 class MyApp extends StatelessWidget {
@@ -25,7 +37,8 @@ class MyApp extends StatelessWidget {
 
         useMaterial3: true,
       ),
-      home: const LandingScreen(),
+      home: const HomeScreen(),
+      // home: const SplashScreen(),
     );
   }
 }

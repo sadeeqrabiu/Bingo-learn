@@ -1,5 +1,9 @@
 
 
+
+
+
+
 class Config{
 
   //All API endpoints
@@ -9,12 +13,11 @@ class Config{
   static const String signUpEndPoint = "/auth/v1/signup";
   static const String userDateEndPoint = '/rest/v1/users';
   static const String allLanguageEndPoint = '/rest/v1/Languages?select=*';
+  static const String getUerDataEndPoint = '/rest/v1/users?userId=eq.';
+
+  //Gemini ApiKey
+  static const String GEMINI_AI_KEY = "AIzaSyCPC7U2K83Nkfwpagyg9M_oPDMfiLsv14c";
 
 
 }
 
-class ApiKey{
-
-  static const String apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwbXFqcnh4ZWdkcmdmaGZ6YnhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk2NjgyMjAsImV4cCI6MjAzNTI0NDIyMH0.2-8VUqjYHxxXThIBmKgsCN1yStSN-XwKiorcpbitUHk';
-
-}

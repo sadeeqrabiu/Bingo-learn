@@ -44,6 +44,9 @@ dependencies:
   sqflite_common_ffi: ^2.3.3
   sqflite: ^2.3.3+1
   shimmer: ^3.0.0
+  percent_indicator: ^4.2.3
+  flutter_riverpod: ^2.5.1
+  flutter_gemini: ^2.0.3
 
 
 dev_dependencies:
