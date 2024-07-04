@@ -5,7 +5,8 @@ import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:bingolearn/core/models/languages/languages_model.dart';
 import 'package:bingolearn/core/models/sign_up/sign_up_response.dart';
-import 'package:bingolearn/core/models/sign_up/user_data.dart';
+import 'package:bingolearn/core/models/sign_up/sign_up_user.dart';
+import 'package:bingolearn/core/models/user/usesr_data.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../local_store/shared_service.dart';
@@ -16,6 +17,7 @@ import '../models/login/login_request.dart';
 import 'package:http/http.dart' as https;
 
 class ApiService{
+
   static var client = https.Client();
   var apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwbXFqcnh4ZWdkcmdmaGZ6YnhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk2NjgyMjAsImV4cCI6MjAzNTI0NDIyMH0.2-8VUqjYHxxXThIBmKgsCN1yStSN-XwKiorcpbitUHk';
 
@@ -30,7 +32,7 @@ class ApiService{
     var response = await client.post(url,
         headers: loginRequestHeader, body: jsonEncode(model.toJson()));
     if (response.statusCode == 200) {
-      debugPrint(response.body);
+      // debugPrint(response.body);
       await SharedService.setLoginDetails(loginResponseJson(response.body));
       return true;
     } else {
@@ -62,7 +64,7 @@ class ApiService{
   }
 
   // SignUpUser Data Future function
-  static Future<bool> signUpData(UserDataModel model) async {
+  static Future<bool> signUpData(SignUpUserModel model) async {
     Map<String, String> requestHeaders = {
       'Content-type': 'application/json',
       'apiKey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwbXFqcnh4ZWdkcmdmaGZ6YnhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk2NjgyMjAsImV4cCI6MjAzNTI0NDIyMH0.2-8VUqjYHxxXThIBmKgsCN1yStSN-XwKiorcpbitUHk'
@@ -108,4 +110,76 @@ class ApiService{
       return temp;
     }
   }
+
+
+  static Future<bool> getUserData() async {
+
+    var userToken =  await SharedService.loginDetails();
+
+    Map<String, String> requestHeaders = {
+      'Content-type': 'application/json',
+      'apiKey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwbXFqcnh4ZWdkcmdmaGZ6YnhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk2NjgyMjAsImV4cCI6MjAzNTI0NDIyMH0.2-8VUqjYHxxXThIBmKgsCN1yStSN-XwKiorcpbitUHk',
+      'Authorization': 'Bearer ${userToken?.token}',
+    };
+
+    debugPrint(userToken!.user?.id);
+    var url = Uri.parse(
+        '${Config.apiHttp}${Config.apiAuth}${Config.getUerDataEndPoint}${userToken.user?.id}');
+    debugPrint(url.toString());
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      debugPrint(response.body);
+      await SharedService.setUserData(userDataResponseJson(response.body) );
+      return true;
+    } else {
+      debugPrint(response.body);
+      debugPrint('fail');
+      return false;
+    }
+  }
+
+  static Future<List<UserDataListModel>> getUserDataList() async {
+
+    var userToken =  await SharedService.loginDetails();
+
+    Map<String, String> requestHeaders = {
+      'Content-type': 'application/json',
+      'apiKey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwbXFqcnh4ZWdkcmdmaGZ6YnhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk2NjgyMjAsImV4cCI6MjAzNTI0NDIyMH0.2-8VUqjYHxxXThIBmKgsCN1yStSN-XwKiorcpbitUHk',
+      'Authorization': 'Bearer ${userToken?.token}',
+    };
+
+    debugPrint(userToken!.user?.id);
+    var url = Uri.parse(
+        '${Config.apiHttp}${Config.apiAuth}${Config.getUerDataEndPoint}${userToken.user?.id}');
+    debugPrint(url.toString());
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    List<UserDataListModel> temp = [];
+    var data = jsonDecode(response.body.toString());
+
+    if (response.statusCode == 200) {
+      debugPrint(response.body);
+      for (Map itemData in data) {
+        temp.add(UserDataListModel.fromJson(itemData));
+      }
+      return temp;
+      // await SharedService.setUserData(userDataResponseJson(response.body) );
+      // return true;
+    } else {
+      debugPrint(response.body);
+      debugPrint('fail');
+      return temp;
+    }
+  }
+
+
+
 }

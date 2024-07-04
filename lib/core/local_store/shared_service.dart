@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:api_cache_manager/utils/cache_manager.dart';
+import 'package:bingolearn/core/models/user/usesr_data.dart';
 import 'package:bingolearn/src/landing/landing_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +54,23 @@ class SharedService{
   }
 
 
+  //set UserData for offline use
+  static Future<void> setUserData(UserDataModel model) async {
+    APICacheDBModel cacheDBModel = APICacheDBModel(key: "user_Data", syncData: jsonEncode(model));
+    await APICacheManager().addCacheData(cacheDBModel);
+    debugPrint(cacheDBModel.toString());
+  }
+
+
+  //GetUser data
+  static Future<UserDataModel?> getUserData() async {
+    var isKeyExit = await APICacheManager().isAPICacheKeyExist("user_Data");
+    if (isKeyExit) {
+      var cacheData = await APICacheManager().getCacheData("user_Data");
+      return userDataResponseJson(cacheData.syncData);
+    }
+    return null;
+  }
 
 
   //Logout the user

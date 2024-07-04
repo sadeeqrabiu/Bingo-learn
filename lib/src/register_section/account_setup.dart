@@ -1,7 +1,7 @@
 import 'package:bingolearn/core/api_section/api_service.dart';
 import 'package:bingolearn/core/models/login/login_response.dart';
 import 'package:bingolearn/core/models/sign_up/sign_up_response.dart';
-import 'package:bingolearn/core/models/sign_up/user_data.dart';
+import 'package:bingolearn/core/models/sign_up/sign_up_user.dart';
 import 'package:bingolearn/src/login_section/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -41,8 +41,7 @@ class AccountSetup extends StatefulWidget {
 class _AccountSetupState extends State<AccountSetup> {
 
 
-  //Calling model offline
-  LoginResponseModel loginResponseModel = LoginResponseModel(token: '');
+
 
   @override
   void initState() {
@@ -103,7 +102,7 @@ class _AccountSetupState extends State<AccountSetup> {
 
 //
   signUpUserData() {
-    UserDataModel model = UserDataModel(
+    SignUpUserModel model = SignUpUserModel(
       firstName: widget.firstName!,
       lastName: widget.lastName!,
       middleName: widget.middleName!,

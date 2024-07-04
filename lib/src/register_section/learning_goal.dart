@@ -1,5 +1,5 @@
 import 'package:bingolearn/core/models/sign_up/sign_up_response.dart';
-import 'package:bingolearn/core/models/sign_up/user_data.dart';
+import 'package:bingolearn/core/models/sign_up/sign_up_user.dart';
 import 'package:bingolearn/src/dashboard/home_screen.dart';
 import 'package:bingolearn/src/register_section/account_setup.dart';
 import 'package:flutter/material.dart';
