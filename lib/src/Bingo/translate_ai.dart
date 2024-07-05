@@ -1,23 +1,21 @@
-import 'package:bingolearn/src/Bingo/chat_state.dart';
-import 'package:bingolearn/src/dashboard/home_screen.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:lottie/lottie.dart';
 
+import '../dashboard/home_screen.dart';
 import '../tools/colors.dart';
 
-class ChatAI extends StatefulWidget {
-  const ChatAI({super.key});
+
+class TranslateAi extends StatefulWidget {
+  const TranslateAi({super.key});
 
   @override
-  State<ChatAI> createState() => _ChatAIState();
+  State<TranslateAi> createState() => _TranslateAiState();
 }
 
-class _ChatAIState extends State<ChatAI> {
+class _TranslateAiState extends State<TranslateAi> {
   //Instance of Gemini
   final gemini = Gemini.instance;
 
@@ -25,9 +23,7 @@ class _ChatAIState extends State<ChatAI> {
 
   ChatUser currentUser = ChatUser(id: "0",);
 
-  ChatUser geminiUser = ChatUser(id: "1", );
-
-  TextEditingController promptController = TextEditingController();
+  ChatUser geminiUser = ChatUser(id: "1",  );
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +81,7 @@ class _ChatAIState extends State<ChatAI> {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => HomeScreen()),
-                  (route) => false);
+                      (route) => false);
             }, // Handle back navigation
           ),
           // automaticallyImplyLeading: false,
@@ -101,6 +97,67 @@ class _ChatAIState extends State<ChatAI> {
                     end: Alignment.bottomCenter),
               ),
             ),
+            //
+            // Padding(
+            //     padding: EdgeInsets.only(left: width * .05, right: width * .05),
+            //     child: Column(
+            //       children: [
+            //         //Header
+            //         Row(
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             GestureDetector(
+            //               child: Icon(
+            //                 EvaIcons.close,
+            //                 color: colorPrimary,
+            //               ),
+            //               onTap: () {
+            //                 Navigator.pushAndRemoveUntil(
+            //                     context,
+            //                     MaterialPageRoute(
+            //                         builder: (context) => HomeScreen()),
+            //                         (route) => false);
+            //               },
+            //             ),
+            //             Text(
+            //               'Bingo.AI',
+            //               style: TextStyle(
+            //                   color: colorPrimary, fontWeight: FontWeight.bold),
+            //             ),
+            //             SizedBox(
+            //               width: width * .05,
+            //             )
+            //           ],
+            //         ),
+            //         Gap(height * .02),
+            //         Container(
+            //           height: height * .035,
+            //           width: width * .2,
+            //           decoration: BoxDecoration(
+            //               borderRadius: BorderRadius.circular(100),
+            //               color: colorBlue.withOpacity(0.35)),
+            //           child: Row(
+            //             mainAxisAlignment: MainAxisAlignment.center,
+            //             children: [
+            //               SizedBox(
+            //                 width: width * 0.02,
+            //                 child: Container(
+            //                   height: height * 0.05,
+            //                   decoration: BoxDecoration(
+            //                     color: colorGreen,
+            //                     shape: BoxShape.circle,
+            //                   ),
+            //                 ),
+            //               ),
+            //               Text(
+            //                 ' Online',
+            //                 style: TextStyle(color: colorPrimary),
+            //               )
+            //             ],
+            //           ),
+            //         ),
+            //       ],
+            //     )),
             Padding(
               padding: EdgeInsets.only(left: width * 0.05, right: width * 0.05),
               child: _buildUI(),
@@ -118,24 +175,35 @@ class _ChatAIState extends State<ChatAI> {
         alwaysShowSend: true,
       ),
       messageOptions:
-          MessageOptions(currentUserContainerColor: colorBlue.withOpacity(0.2)),
+      MessageOptions(
+      currentUserContainerColor: Colors.transparent,
+      showOtherUsersAvatar: false,
+      containerColor: Colors.transparent,
+      textColor: colorPrimary
+      ),
+
     );
   }
 
   void _sendMessage(ChatMessage chatMessage) {
     setState(() {
+      debugPrint(chatMessage.toString());
       messages = [chatMessage, ...messages];
     });
 
     //Gemini
     try {
-      String question = chatMessage.text;
-      gemini.streamGenerateContent(question).listen((event) {
+      String translation = '${chatMessage.text}in french';
+
+      // gemini.streamGenerateContent(translation,generationConfig: GenerationConfig(
+      //   temperature: 1,
+      // ) ).listen((event){});
+      gemini.streamGenerateContent(translation).listen((event) {
         ChatMessage? lastMessage = messages.firstOrNull;
         if (lastMessage != null && lastMessage.user == geminiUser) {
           lastMessage = messages.removeAt(0);
           String response = event.content?.parts?.fold(
-                  "", (previous, current) => "$previous ${current.text}") ??
+              "", (previous, current) => "$previous ${current.text}") ??
               "";
 
           lastMessage.text += response;
@@ -144,7 +212,7 @@ class _ChatAIState extends State<ChatAI> {
           });
         } else {
           String response = event.content?.parts?.fold(
-                  "", (previous, current) => "$previous ${current.text}") ??
+              "", (previous, current) => "$previous ${current.text}") ??
               "";
           ChatMessage message = ChatMessage(
               user: geminiUser, createdAt: DateTime.now(), text: response);
