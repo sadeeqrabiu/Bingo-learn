@@ -15,14 +15,6 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 void main() {
   Gemini.init(apiKey: Config.GEMINI_AI_KEY);
   runApp(const ProviderScope(child: MyApp()));
-
-
-  // if (Platform.isAndroid || Platform.isIOS) {
-  //   sqfliteFfiInit();
-  //   databaseFactory = databaseFactoryFfi;
-  // }
-
-
 }
 
 class MyApp extends StatelessWidget {

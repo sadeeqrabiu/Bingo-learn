@@ -193,7 +193,7 @@ class _TranslateAiState extends State<TranslateAi> {
 
     //Gemini
     try {
-      String translation = '${chatMessage.text}in french';
+      String translation = 'what\'s ${chatMessage.text}in japanese and explain in short.';
 
       // gemini.streamGenerateContent(translation,generationConfig: GenerationConfig(
       //   temperature: 1,

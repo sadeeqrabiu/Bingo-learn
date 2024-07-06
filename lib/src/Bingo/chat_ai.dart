@@ -21,6 +21,8 @@ class _ChatAIState extends State<ChatAI> {
   //Instance of Gemini
   final gemini = Gemini.instance;
 
+  bool introductionSent = false;
+
   List<ChatMessage> messages = [];
 
   ChatUser currentUser = ChatUser(id: "0",);
@@ -118,43 +120,120 @@ class _ChatAIState extends State<ChatAI> {
         alwaysShowSend: true,
       ),
       messageOptions:
-          MessageOptions(currentUserContainerColor: colorBlue.withOpacity(0.2)),
+      MessageOptions(
+          currentUserContainerColor: Colors.transparent,
+          showOtherUsersAvatar: false,
+          containerColor: Colors.transparent,
+          textColor: colorPrimary
+      ),
     );
   }
 
+
+  introduction(){
+
+  }
+
   void _sendMessage(ChatMessage chatMessage) {
-    setState(() {
-      messages = [chatMessage, ...messages];
-    });
 
-    //Gemini
-    try {
-      String question = chatMessage.text;
-      gemini.streamGenerateContent(question).listen((event) {
-        ChatMessage? lastMessage = messages.firstOrNull;
-        if (lastMessage != null && lastMessage.user == geminiUser) {
-          lastMessage = messages.removeAt(0);
-          String response = event.content?.parts?.fold(
-                  "", (previous, current) => "$previous ${current.text}") ??
-              "";
-
-          lastMessage.text += response;
-          setState(() {
-            messages = [lastMessage!, ...messages];
-          });
-        } else {
-          String response = event.content?.parts?.fold(
-                  "", (previous, current) => "$previous ${current.text}") ??
-              "";
-          ChatMessage message = ChatMessage(
-              user: geminiUser, createdAt: DateTime.now(), text: response);
-          setState(() {
-            messages = [message, ...messages];
-          });
-        }
+    if(!introductionSent){
+      introductionSent = true;
+      setState(() {
+        messages = [chatMessage, ...messages];
       });
-    } catch (e) {
-      print(e);
+
+      const promptInstruction =
+          '**System Instructions:**'
+          '* You are a Language Learning Assistant for Bingo Learn.'
+          '* Be friendly, helpful, and encouraging.'
+          '**Prompts:**'
+          '* When the user starts a first session:'
+          '>Hi there!   Welcome to Bingo Learn. How can I help you practice [French] today?';
+
+
+      //Gemini
+      try {
+        String question = promptInstruction + chatMessage.text;
+        gemini.streamGenerateContent(
+          question,
+        ).listen((event) {
+
+          ChatMessage? lastMessage = messages.firstOrNull;
+          if (lastMessage != null && lastMessage.user == geminiUser) {
+            lastMessage = messages.removeAt(0);
+            String response = event.content?.parts?.fold(
+                "", (previous, current) => "$previous ${current.text}") ??
+                "";
+
+            lastMessage.text += response;
+            setState(() {
+              messages = [lastMessage!, ...messages];
+            });
+          } else {
+            String response = event.content?.parts?.fold(
+                "", (previous, current) => "$previous ${current.text}") ??
+                "";
+            ChatMessage message = ChatMessage(
+                user: geminiUser, createdAt: DateTime.now(), text: response);
+            setState(() {
+              messages = [message, ...messages];
+            });
+          }
+        });
+      } catch (e) {
+        print(e);
+      }
+
+    }else{
+      setState(() {
+        messages = [chatMessage, ...messages];
+      });
+
+      const promptInstruction =
+    '**System Instructions:**'
+    '* **Role:** Language Learning Assistant'
+    '* **Personality:** Friendly, helpful, and encouraging'
+    '* **Language:** French'
+    '* **Response Style:**'
+    '* Use plain text without asterisks (***) using any other formatting that the user will understand.'
+    '* Focus on clear and concise communication.'
+    '* don\'t response to any prompt outside language learning just say:Hmm, that\'s not quite something I can tackle yet. How about we try some fun language learning exercises instead?'
+    '* Prioritize providing relevant information and completing tasks.';
+
+
+      //Gemini
+      try {
+        String question = promptInstruction + chatMessage.text;
+        gemini.streamGenerateContent(
+          question,
+        ).listen((event) {
+
+          ChatMessage? lastMessage = messages.firstOrNull;
+          if (lastMessage != null && lastMessage.user == geminiUser) {
+            lastMessage = messages.removeAt(0);
+            String response = event.content?.parts?.fold(
+                "", (previous, current) => "$previous ${current.text}") ??
+                "";
+
+            lastMessage.text += response;
+            setState(() {
+              messages = [lastMessage!, ...messages];
+            });
+          } else {
+            String response = event.content?.parts?.fold(
+                "", (previous, current) => "$previous ${current.text}") ??
+                "";
+            ChatMessage message = ChatMessage(
+                user: geminiUser, createdAt: DateTime.now(), text: response);
+            setState(() {
+              messages = [message, ...messages];
+            });
+          }
+        });
+      } catch (e) {
+        print(e);
+      }
     }
+
   }
 }

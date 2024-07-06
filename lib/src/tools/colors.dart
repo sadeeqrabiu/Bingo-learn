@@ -16,7 +16,7 @@ var backgroundColor = const Color(0xFF243358);
 var homeScreenColor = const Color(0xFF092E63);
 var colorTab = const Color(0xFF93AAE2);
 var colorSpecialist = const Color(0xFF3D4863);
-var colorGreen = const Color(0xFF17CD34);
+var colorGreen = const Color(0xFF1A5319);
 var colorOrange = const Color(0xFFFFB800);
 var colorLabCard = const Color(0xFF9CB3E3);
 

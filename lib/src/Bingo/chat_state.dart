@@ -15,4 +15,5 @@ class ChatState {
       geminiResponse: geminiResponse ?? this.geminiResponse,
     );
   }
+
 }
