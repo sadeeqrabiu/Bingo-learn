@@ -10,6 +10,7 @@ import 'package:bingolearn/core/models/user/usesr_data.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../local_store/shared_service.dart';
+import '../models/game/words_model.dart';
 import '../models/login/login_response.dart';
 import '../models/sign_up/sign_up_resquest.dart';
 import 'config.dart';
@@ -181,5 +182,31 @@ class ApiService{
   }
 
 
+  static Future<List<WordsModel>> getWords() async {
+    Map<String, String> requestHeaders = {
+      'Content-type': 'application/json',
+      'apiKey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwbXFqcnh4ZWdkcmdmaGZ6YnhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk2NjgyMjAsImV4cCI6MjAzNTI0NDIyMH0.2-8VUqjYHxxXThIBmKgsCN1yStSN-XwKiorcpbitUHk'
+    };
+    var url = Uri.parse(Config.apiHttp + Config.apiAuth + Config.getWordsEndPoint);
 
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    List<WordsModel> temp = [];
+    var data = jsonDecode(response.body.toString());
+
+    if (response.statusCode == 200) {
+      debugPrint('success words endPoint hit');
+      for (Map itemData in data) {
+        temp.add(WordsModel.fromJson(itemData));
+      }
+      return temp;
+    } else {
+      debugPrint('getting Languages failed');
+      debugPrint(response.body);
+      return temp;
+    }
+  }
 }

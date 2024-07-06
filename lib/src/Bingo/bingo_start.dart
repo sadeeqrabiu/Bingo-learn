@@ -1,3 +1,4 @@
+import 'package:bingolearn/src/Bingo/chat.dart';
 import 'package:bingolearn/src/Bingo/chat_ai.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -114,7 +115,7 @@ class _BingoStartState extends State<BingoStart> {
                       onTap: (){
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                              return const ChatAI();
+                              return const Chat();
                             }));
                       },
                     )

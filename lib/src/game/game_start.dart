@@ -40,7 +40,7 @@ class _GameStartState extends State<GameStart> {
             ),
             //
             Padding(
-                padding: EdgeInsets.only(left: width * .05, right: width * .05),
+                padding: EdgeInsets.only(left: width * .09, right: width * .09),
                 child: Column(
                   children: [
                     //Header
@@ -86,9 +86,39 @@ class _GameStartState extends State<GameStart> {
                       ],
                     ),
                     Gap(height * .02),
-                    Text(
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla turpis sapien, dignissim vel dolor aliquet, dictum egestas lectus. ',
-                      style: TextStyle(color: colorPrimary),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Match the correct words from a set of flashcards to complete a given sentence accurately.',
+                          style: TextStyle(color: colorPrimary),
+                        ),
+                        Gap(height*.01),
+                        Text(
+                              'Setup:',
+                          style: TextStyle(color: colorPrimary),
+                        ),
+                        Gap(height*.01),
+                        Text(
+                              '1.Each game round presents the user with a sentence',
+                          style: TextStyle(color: colorPrimary),
+                        ),
+                        Gap(height*.01),
+                        Text(
+                              '2.Below the sentence, a set of word flashcards are displayed. The number of flashcards varies depending on the sentence length and difficulty.',
+                          style: TextStyle(color: colorPrimary),
+                        ),
+                        Gap(height*.01),
+                        Text(
+                         '3.Some flashcards will contain the correct words needed to match the sentence.',
+                          style: TextStyle(color: colorPrimary),
+                        ),
+                        Gap(height*.01),
+                        Text(
+                          '4. Click on the correct card to continue.',
+                          style: TextStyle(color: colorPrimary),
+                        ),
+                      ],
                     ),
 
                     Gap(height*.05),

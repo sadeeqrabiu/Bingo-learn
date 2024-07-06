@@ -1,8 +1,12 @@
+import 'package:bingolearn/src/Bingo/chat_state.dart';
+import 'package:bingolearn/src/dashboard/home_screen.dart';
+import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:lottie/lottie.dart';
 
 import '../tools/colors.dart';
 
@@ -14,9 +18,16 @@ class ChatAI extends StatefulWidget {
 }
 
 class _ChatAIState extends State<ChatAI> {
-
   //Instance of Gemini
   final gemini = Gemini.instance;
+
+  bool introductionSent = false;
+
+  List<ChatMessage> messages = [];
+
+  ChatUser currentUser = ChatUser(id: "0",);
+
+  ChatUser geminiUser = ChatUser(id: "1", );
 
   TextEditingController promptController = TextEditingController();
 
@@ -29,66 +40,57 @@ class _ChatAIState extends State<ChatAI> {
         backgroundColor: colorPrimary,
         appBar: AppBar(
           backgroundColor: colorMain,
-          toolbarHeight: height * 0.02,
-          elevation: 0,
-          automaticallyImplyLeading: false,
-        ),
-        bottomNavigationBar: BottomAppBar(
-          color: const Color(0xFF06141B),
-          height: height*.08,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          title: Column(
             children: [
+              Gap(height * 0.02),
+              Text(
+                'Bingo.AI',
+                style: TextStyle(
+                    color: colorPrimary,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15),
+              ),
+              Gap(height * .02),
               Container(
-                height: height * .05,
-                width: width* .7,
+                height: height * .03,
+                width: width * .2,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  border: Border.all(
-                    color:
-                    colorGrey, //                   <--- border color
-                  ),
-                ),
+                    borderRadius: BorderRadius.circular(100),
+                    color: colorBlue.withOpacity(0.35)),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: width * .02),
-                    ),
-                    Gap(width*.01),
-                    Flexible(
-                      child: TextFormField(
-                        controller: promptController,
-                        style: TextStyle(color: colorPrimary, fontSize: 12),
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                            hintText: 'Type a prompt here... ',
-                            hintStyle: TextStyle(
-                                color: colorGrey, fontSize: 13),
-                            border: InputBorder.none),
+                    SizedBox(
+                      width: width * 0.02,
+                      child: Container(
+                        height: height * 0.05,
+                        decoration: BoxDecoration(
+                          color: colorGreen,
+                          shape: BoxShape.circle,
+                        ),
                       ),
                     ),
+                    Text(
+                      ' Online',
+                      style: TextStyle(color: colorPrimary, fontSize: 10),
+                    )
                   ],
                 ),
               ),
-              SizedBox(
-                height: height * 0.03,
-                child: SvgPicture.asset(
-                  'assets/icons/recordIcon.svg',
-                ),
-              ),
-              GestureDetector(
-                child: SizedBox(
-                  height: height * 0.03,
-                  child: SvgPicture.asset(
-                    'assets/icons/sendIcon.svg',
-                  ),
-                ),
-                onTap: (){
-                  _streamGenerativeContent();
-                },
-              ),
             ],
           ),
+          toolbarHeight: height * 0.09,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(EvaIcons.close, color: colorPrimary), // Set color
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (route) => false);
+            }, // Handle back navigation
+          ),
+          // automaticallyImplyLeading: false,
         ),
         body: Stack(
           children: [
@@ -101,176 +103,137 @@ class _ChatAIState extends State<ChatAI> {
                     end: Alignment.bottomCenter),
               ),
             ),
-            //
             Padding(
-                padding: EdgeInsets.only(left: width * .05, right: width * .05),
-                child: Column(
-                  children: [
-                    //Header
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          child: Icon(
-                            EvaIcons.arrowIosBackOutline,
-                            color: colorPrimary,
-                          ),
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                        Text(
-                          'Bingo.AI',
-                          style: TextStyle(
-                              color: colorPrimary, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          width: width * .05,
-                        )
-                      ],
-                    ),
-
-                    Gap(height * .02),
-                    Container(
-                      height: height * .035,
-                      width: width * .2,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: colorBlue.withOpacity(0.35)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: width * 0.02,
-                            child: Container(
-                              height: height * 0.05,
-                              decoration: BoxDecoration(
-                                color: colorGreen,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            ' Online',
-                            style: TextStyle(color: colorPrimary),
-                          )
-                        ],
-                      ),
-                    ),
-
-                    // Gap(height * .05),
-                    // Column(
-                    //   children: [
-                    //     SizedBox(
-                    //       // margin: EdgeInsets.only(right: width*0.04, bottom: height*.025),
-                    //       height: height * 0.03,
-                    //       child: SvgPicture.asset(
-                    //         'assets/icons/translateIcon.svg',
-                    //       ),
-                    //     ),
-                    //     Gap(height*.01),
-                    //     Text('Translate', style: TextStyle(color: colorPrimary ),)
-                    //   ],
-                    // ),
-                    // Gap(height * .02),
-                    // GestureDetector(
-                    //   child: Container(
-                    //     height: height * .04,
-                    //     width: width * .85,
-                    //     decoration: BoxDecoration(
-                    //         borderRadius: BorderRadius.circular(10),
-                    //         color: colorGrey.withOpacity(0.2)),
-                    //     child: Center(
-                    //       child: Text(
-                    //         'How do you say “How are you” in french?',
-                    //         style: TextStyle(color: colorPrimary),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    // Gap(height * .02),
-                    // Container(
-                    //   height: height * .04,
-                    //   width: width * .85,
-                    //   decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.circular(10),
-                    //       color: colorGrey.withOpacity(0.2)),
-                    //   child: Center(
-                    //     child: Text(
-                    //       'write a poem about flower and love',
-                    //       style: TextStyle(color: colorPrimary),
-                    //     ),
-                    //   ),
-                    // ),
-                    // Gap(height*.02),
-                    // Column(
-                    //   children: [
-                    //     SizedBox(
-                    //       // margin: EdgeInsets.only(right: width*0.04, bottom: height*.025),
-                    //       height: height * 0.03,
-                    //       child: SvgPicture.asset(
-                    //         'assets/icons/conversationIcon.svg',
-                    //       ),
-                    //     ),
-                    //     Text('Conversation', style: TextStyle(color: colorPrimary ),)
-                    //   ],
-                    // ),
-                    // Gap(height * .02),
-                    // Container(
-                    //   height: height * .04,
-                    //   width: width * .85,
-                    //   decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.circular(10),
-                    //       color: colorGrey.withOpacity(0.2)),
-                    //   child: Center(
-                    //     child: Text(
-                    //       'Hi, What’s your name? ',
-                    //       style: TextStyle(color: colorPrimary),
-                    //     ),
-                    //   ),
-                    // ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: SingleChildScrollView(
-                          child: GeminiResponseTypeView(
-                              builder: ((context, child, response, loading) {
-                                if (loading) {
-                                  return const CircularProgressIndicator();
-                                }
-                                if (response != null) {
-                                  return Text(response, style: TextStyle(color: colorPrimary),);
-                                }
-                                return const SizedBox();
-                              })),
-                        ),
-                      ),
-                    ),
-
-                  ],
-                ))
+              padding: EdgeInsets.only(left: width * 0.05, right: width * 0.05),
+              child: _buildUI(),
+            ),
           ],
         ));
   }
-  void _streamGenerativeContent() {
-    // fruit = Globals.fruits[Random().nextInt(Globals.fruits.length)];
-    final prompt = promptController.text;
 
-    print(prompt);
-    gemini.streamGenerateContent(prompt).listen((event){});
-    // gemini.streamGenerateContent(prompt,
-    //     generationConfig: GenerationConfig(
-    //       temperature: 1,
-    //     ),
-    //     safetySettings: [
-    //       SafetySetting(
-    //           category: SafetyCategory.hateSpeech,
-    //           threshold: SafetyThreshold.blockLowAndAbove),
-    //       SafetySetting(
-    //           category: SafetyCategory.harassment,
-    //           threshold: SafetyThreshold.blockLowAndAbove)
-    //     ]).listen((event) {
-    //   ref.read(Providers.uiStateNotifier.notifier).updateState(UIState.loaded);
-    // });
+  Widget _buildUI() {
+    return DashChat(
+      currentUser: currentUser,
+      onSend: _sendMessage,
+      messages: messages,
+      inputOptions: const InputOptions(
+        alwaysShowSend: true,
+      ),
+      messageOptions:
+      MessageOptions(
+          currentUserContainerColor: Colors.transparent,
+          showOtherUsersAvatar: false,
+          containerColor: Colors.transparent,
+          textColor: colorPrimary
+      ),
+    );
+  }
+
+
+  introduction(){
+
+  }
+
+  void _sendMessage(ChatMessage chatMessage) {
+
+    if(!introductionSent){
+      introductionSent = true;
+      setState(() {
+        messages = [chatMessage, ...messages];
+      });
+
+      const promptInstruction =
+          '**System Instructions:**'
+          '* You are a Language Learning Assistant for Bingo Learn.'
+          '* Be friendly, helpful, and encouraging.'
+          '**Prompts:**'
+          '* When the user starts a first session:'
+          '>Hi there!   Welcome to Bingo Learn. How can I help you practice [French] today?';
+
+
+      //Gemini
+      try {
+        String question = promptInstruction + chatMessage.text;
+        gemini.streamGenerateContent(
+          question,
+        ).listen((event) {
+
+          ChatMessage? lastMessage = messages.firstOrNull;
+          if (lastMessage != null && lastMessage.user == geminiUser) {
+            lastMessage = messages.removeAt(0);
+            String response = event.content?.parts?.fold(
+                "", (previous, current) => "$previous ${current.text}") ??
+                "";
+
+            lastMessage.text += response;
+            setState(() {
+              messages = [lastMessage!, ...messages];
+            });
+          } else {
+            String response = event.content?.parts?.fold(
+                "", (previous, current) => "$previous ${current.text}") ??
+                "";
+            ChatMessage message = ChatMessage(
+                user: geminiUser, createdAt: DateTime.now(), text: response);
+            setState(() {
+              messages = [message, ...messages];
+            });
+          }
+        });
+      } catch (e) {
+        print(e);
+      }
+
+    }else{
+      setState(() {
+        messages = [chatMessage, ...messages];
+      });
+
+      const promptInstruction =
+    '**System Instructions:**'
+    '* **Role:** Language Learning Assistant'
+    '* **Personality:** Friendly, helpful, and encouraging'
+    '* **Language:** French'
+    '* **Response Style:**'
+    '* Use plain text without asterisks (***) using any other formatting that the user will understand.'
+    '* Focus on clear and concise communication.'
+    '* don\'t response to any prompt outside language learning just say:Hmm, that\'s not quite something I can tackle yet. How about we try some fun language learning exercises instead?'
+    '* Prioritize providing relevant information and completing tasks.';
+
+
+      //Gemini
+      try {
+        String question = promptInstruction + chatMessage.text;
+        gemini.streamGenerateContent(
+          question,
+        ).listen((event) {
+
+          ChatMessage? lastMessage = messages.firstOrNull;
+          if (lastMessage != null && lastMessage.user == geminiUser) {
+            lastMessage = messages.removeAt(0);
+            String response = event.content?.parts?.fold(
+                "", (previous, current) => "$previous ${current.text}") ??
+                "";
+
+            lastMessage.text += response;
+            setState(() {
+              messages = [lastMessage!, ...messages];
+            });
+          } else {
+            String response = event.content?.parts?.fold(
+                "", (previous, current) => "$previous ${current.text}") ??
+                "";
+            ChatMessage message = ChatMessage(
+                user: geminiUser, createdAt: DateTime.now(), text: response);
+            setState(() {
+              messages = [message, ...messages];
+            });
+          }
+        });
+      } catch (e) {
+        print(e);
+      }
+    }
+
   }
 }
