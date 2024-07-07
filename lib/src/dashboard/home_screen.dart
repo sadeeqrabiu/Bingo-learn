@@ -12,6 +12,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+import '../../core/api_section/api_service.dart';
+import '../../core/local_store/shared_service.dart';
+import '../../core/models/user/usesr_data.dart';
 import '../tools/colors.dart';
 
 
@@ -31,6 +34,16 @@ class _HomeScreenState extends State<HomeScreen> {
   double timeSpent = 10.0; // Example: 10 minutes spent
 
   // var time = 0.3;
+
+  @override
+  void initState() {
+    super.initState();
+    // checkTime();
+    // fetchData();
+    getUser();
+  }
+  List<UserDataListModel>? _userData;
+
 
   @override
   Widget build(BuildContext context) {
@@ -68,15 +81,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       GestureDetector(
                         child: SizedBox(
-                          width: width * 0.13,
+                          width: width * 0.1,
                           child: Container(
                             height: height * 0.065,
                             decoration: BoxDecoration(
                               color: colorSecondary,
                               shape: BoxShape.circle,
-                              // image: DecorationImage(
-                              //     image: NetworkImage(profileModel.profileImg),
-                              //     fit: BoxFit.cover),
+                              image: DecorationImage(
+                                  image: NetworkImage('${_userData?[0].learningFlag}'),
+                                  fit: BoxFit.cover),
                             ),
                           ),
                         ),
@@ -122,7 +135,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           Text('5', style: TextStyle(color: colorPrimary),),
 
                           Gap(width*.1),
-                          Icon(EvaIcons.bellOutline, color: colorPrimary.withOpacity(0.7),)
+                          GestureDetector(
+                              child: Icon(EvaIcons.bellOutline, color: colorPrimary.withOpacity(0.7),),
+                            onTap: (){
+                              SharedService.logout(context);
+                            },
+                          )
                         ],
                       ),
 
@@ -153,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                    Row(
                                      children: [
                                        Text('10min/', style: TextStyle(fontSize: 18, color: colorPrimary, fontWeight: FontWeight.bold),),
-                                       Text('15min', style: TextStyle(fontSize: 15, color: colorYellow),),
+                                       Text('${_userData?[0].learningGoal}min', style: TextStyle(fontSize: 15, color: colorYellow),),
                                      ],
                                    ),
                                  ],
@@ -427,5 +445,21 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           ],
         ));
+  }
+
+  void fetchData() async {
+    ApiService.getUserData().then((response) => {
+      getUser(),
+    });
+  }
+  Future<void> getUser() async {
+    setState(() async {
+      _userData = await ApiService.getUserData();
+    });
+
+    // debugPrint('firstName: ${_userData?[0].firstName}');
+    // debugPrint('middleName: ${_userData?[0].middleName}');
+    // debugPrint('LastName: ${_userData?[0].lastName}');
+    // debugPrint('LastName: ${_userData?[0].learningFlag}');
   }
 }

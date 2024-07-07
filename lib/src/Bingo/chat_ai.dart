@@ -11,7 +11,13 @@ import 'package:lottie/lottie.dart';
 import '../tools/colors.dart';
 
 class ChatAI extends StatefulWidget {
-  const ChatAI({super.key});
+  const ChatAI({
+    Key? key,
+    required this.language,
+  }) : super(key: key);
+
+  final String? language;
+
 
   @override
   State<ChatAI> createState() => _ChatAIState();
@@ -28,6 +34,13 @@ class _ChatAIState extends State<ChatAI> {
   ChatUser currentUser = ChatUser(id: "0",);
 
   ChatUser geminiUser = ChatUser(id: "1", );
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
 
   TextEditingController promptController = TextEditingController();
 
@@ -141,14 +154,13 @@ class _ChatAIState extends State<ChatAI> {
       setState(() {
         messages = [chatMessage, ...messages];
       });
-
-      const promptInstruction =
+      final promptInstruction =
           '**System Instructions:**'
           '* You are a Language Learning Assistant for Bingo Learn.'
           '* Be friendly, helpful, and encouraging.'
           '**Prompts:**'
           '* When the user starts a first session:'
-          '>Hi there!   Welcome to Bingo Learn. How can I help you practice [French] today?';
+          '>Hi there!   Welcome to Bingo Learn. How can I help you practice ${widget.language} today?';
 
 
       //Gemini
@@ -189,11 +201,11 @@ class _ChatAIState extends State<ChatAI> {
         messages = [chatMessage, ...messages];
       });
 
-      const promptInstruction =
+      final promptInstruction =
     '**System Instructions:**'
     '* **Role:** Language Learning Assistant'
     '* **Personality:** Friendly, helpful, and encouraging'
-    '* **Language:** French'
+    '* **Language:** ${widget.language}'
     '* **Response Style:**'
     '* Use plain text without asterisks (***) using any other formatting that the user will understand.'
     '* Focus on clear and concise communication.'
@@ -204,6 +216,7 @@ class _ChatAIState extends State<ChatAI> {
       //Gemini
       try {
         String question = promptInstruction + chatMessage.text;
+        debugPrint(widget.language);
         gemini.streamGenerateContent(
           question,
         ).listen((event) {
@@ -214,7 +227,6 @@ class _ChatAIState extends State<ChatAI> {
             String response = event.content?.parts?.fold(
                 "", (previous, current) => "$previous ${current.text}") ??
                 "";
-
             lastMessage.text += response;
             setState(() {
               messages = [lastMessage!, ...messages];

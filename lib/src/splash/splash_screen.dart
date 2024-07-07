@@ -1,5 +1,9 @@
+import 'package:bingolearn/src/dashboard/home_screen.dart';
+import 'package:bingolearn/src/landing/landing_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
+import '../../core/local_store/shared_service.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -9,7 +13,41 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
+
 class _SplashScreenState extends State<SplashScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    checkPasscode();
+  }
+
+  checkPasscode() async {
+    // Check to see if a user is logged in
+    bool result = await SharedService.isLoggedIn();
+
+    // Simulate a service call
+    await Future.delayed(const Duration(milliseconds: 1500), () {});
+
+    // Navigate to the appropriate page
+    if (result) {
+      if (context.mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      }
+    } else {
+      if (context.mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LandingScreen()),
+        );
+      }
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     //Media Query

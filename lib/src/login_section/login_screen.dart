@@ -346,7 +346,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   onTap: (){
-                    SharedService.logout(context);
+                    // SharedService.logout(context);
                     // Navigator.push(context,
                     //     MaterialPageRoute(builder: (context) {
                     //       return const RegEmail();

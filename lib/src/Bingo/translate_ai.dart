@@ -9,7 +9,13 @@ import '../tools/colors.dart';
 
 
 class TranslateAi extends StatefulWidget {
-  const TranslateAi({super.key});
+
+  const TranslateAi({
+    Key? key,
+    required this.language,
+  }) : super(key: key);
+
+  final String? language;
 
   @override
   State<TranslateAi> createState() => _TranslateAiState();
@@ -193,7 +199,7 @@ class _TranslateAiState extends State<TranslateAi> {
 
     //Gemini
     try {
-      String translation = 'what\'s ${chatMessage.text}in japanese and explain in short.';
+      String translation = 'what\'s ${chatMessage.text}in ${widget.language} and explain in short.';
 
       // gemini.streamGenerateContent(translation,generationConfig: GenerationConfig(
       //   temperature: 1,

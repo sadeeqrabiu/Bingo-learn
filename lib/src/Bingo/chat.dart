@@ -7,6 +7,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../core/api_section/api_service.dart';
+import '../../core/models/user/usesr_data.dart';
 import '../tools/colors.dart';
 
 
@@ -20,6 +22,15 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   //Instance of Gemini
   final gemini = Gemini.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    // checkTime();
+    // fetchData();
+    getUser();
+  }
+  List<UserDataListModel>? _userData;
 
   TextEditingController promptController = TextEditingController();
 
@@ -243,26 +254,26 @@ class _ChatState extends State<Chat> {
                         );
                       },
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: SingleChildScrollView(
-                          child: GeminiResponseTypeView(
-                              builder: ((context, child, response, loading) {
-                                if (loading) {
-                                  return SizedBox(
-                                      width: width * .8,
-                                      height: height * .13,
-                                      child: Lottie.asset('assets/lottie/loading.json'));
-                                }
-                                if (response != null) {
-                                  return Text(response, style: TextStyle(color: colorPrimary),);
-                                }
-                                return const SizedBox();
-                              })),
-                        ),
-                      ),
-                    ),
+                    // Expanded(
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.all(10.0),
+                    //     child: SingleChildScrollView(
+                    //       child: GeminiResponseTypeView(
+                    //           builder: ((context, child, response, loading) {
+                    //             if (loading) {
+                    //               return SizedBox(
+                    //                   width: width * .8,
+                    //                   height: height * .13,
+                    //                   child: Lottie.asset('assets/lottie/loading.json'));
+                    //             }
+                    //             if (response != null) {
+                    //               return Text(response, style: TextStyle(color: colorPrimary),);
+                    //             }
+                    //             return const SizedBox();
+                    //           })),
+                    //     ),
+                    //   ),
+                    // ),
 
                   ],
                 ))
@@ -273,7 +284,7 @@ class _ChatState extends State<Chat> {
   //route translate
   Route _translateRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) =>  const TranslateAi(),
+      pageBuilder: (context, animation, secondaryAnimation) =>  TranslateAi(language:  _userData?[0].lLanguage,),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(0.0, 0.0);
         const end = Offset.zero;
@@ -291,7 +302,7 @@ class _ChatState extends State<Chat> {
   //route chat
   Route _chatRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) =>  const ChatAI(),
+      pageBuilder: (context, animation, secondaryAnimation) =>  ChatAI(language: _userData?[0].lLanguage,),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(0.0, 0.0);
         const end = Offset.zero;
@@ -305,6 +316,22 @@ class _ChatState extends State<Chat> {
         );
       },
     );
+  }
+
+  void fetchData() async {
+    ApiService.getUserData().then((response) => {
+      getUser(),
+    });
+  }
+  Future<void> getUser() async {
+    setState(() async {
+      _userData = await ApiService.getUserData();
+    });
+
+    // debugPrint('firstName: ${_userData?[0].firstName}');
+    // debugPrint('middleName: ${_userData?[0].middleName}');
+    // debugPrint('LastName: ${_userData?[0].lastName}');
+    // debugPrint('LastName: ${_userData?[0].learningFlag}');
   }
   void _streamGenerativeContent() {
     // fruit = Globals.fruits[Random().nextInt(Globals.fruits.length)];

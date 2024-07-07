@@ -31,9 +31,9 @@ class _LoginAcSetupState extends State<LoginAcSetup> {
   @override
   void initState() {
     super.initState();
-    // checkTime();
+    checkTime();
     // fetchData();
-    getUser();
+    // getUser();
   }
   List<UserDataListModel>? _userData;
   // UserDataModel userDataModel = UserDataModel();
@@ -100,9 +100,7 @@ class _LoginAcSetupState extends State<LoginAcSetup> {
         const begin = Offset(0.0, 0.0);
         const end = Offset.zero;
         const curve = Curves.elasticOut;
-
         var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
         return SlideTransition(
           position: animation.drive(tween),
           child: child,
@@ -112,55 +110,18 @@ class _LoginAcSetupState extends State<LoginAcSetup> {
   }
 
 
-  void fetchData() async {
-
-    ApiService.getUserDataList().then((response) => {
-
-      // if (response)
-      //   {
-      //
-      //     // debugPrint(userDataModel.middleName),
-      //     // Navigator.pushAndRemoveUntil(
-      //     //     context,
-      //     //     MaterialPageRoute(
-      //     //         builder: (context) => const LoginAcSetup()),
-      //     //         (route) => false),
-      //
-      //   },
-      getUser(),
-
-
-
-  });
-  }
-  Future<void> getUser() async {
-    _userData = await ApiService.getUserDataList();
-    debugPrint('firstName: ${_userData?[0].firstName}');
-    debugPrint('middleName: ${_userData?[0].middleName}');
-    debugPrint('LastName: ${_userData?[0].lastName}');
-    debugPrint('LastName: ${_userData?[0].language}');
-    // setState(() {
-    //   _isloading = false;
-    // });
-  }
-
-  // void getUserData() async {
-  //   var response = await SharedService.getUserData();
-  //   setState(() {
-  //     userDataModel = UserDataModel.fromJson(response!.toJson());
-  //     // userDataModel = UserDataModel.fromJson(json.decode(response.toString())[0]);
-  //   });
-  //   debugPrint(userDataModel.firstName);
-  //
+  // void fetchData() async {
+  //   ApiService.getUserData().then((response) => {
+  //     getUser(),
+  // });
   // }
-  //  Future<void> getUserData() async {
-  //   var response = await SharedService.getUserData();
-  //   if (response != null) {
-  //     final parsedData = List<UserDataModel>.from(json.decode(response.toString()).map((item) => UserDataModel.fromJson(item)));
-  //     setState(() {
-  //       userDataModel = parsedData;
-  //     });
-  //   }
+  // Future<void> getUser() async {
+  //   _userData = await ApiService.getUserData();
+  //   debugPrint('firstName: ${_userData?[0].firstName}');
+  //   debugPrint('middleName: ${_userData?[0].middleName}');
+  //   debugPrint('LastName: ${_userData?[0].lastName}');
+  //   debugPrint('LastName: ${_userData?[0].language}');
   // }
+
 
 }

@@ -113,37 +113,42 @@ class ApiService{
   }
 
 
-  static Future<bool> getUserData() async {
+  // static Future<List<UserDataModel>> getUserData() async {
+  //
+  //   var userToken =  await SharedService.loginDetails();
+  //
+  //   Map<String, String> requestHeaders = {
+  //     'Content-type': 'application/json',
+  //     'apiKey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwbXFqcnh4ZWdkcmdmaGZ6YnhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk2NjgyMjAsImV4cCI6MjAzNTI0NDIyMH0.2-8VUqjYHxxXThIBmKgsCN1yStSN-XwKiorcpbitUHk',
+  //     'Authorization': 'Bearer ${userToken?.token}',
+  //   };
+  //
+  //   debugPrint(userToken!.user?.id);
+  //   var url = Uri.parse(
+  //       '${Config.apiHttp}${Config.apiAuth}${Config.getUerDataEndPoint}${userToken.user?.id}');
+  //   debugPrint(url.toString());
+  //
+  //   var response = await client.get(
+  //     url,
+  //     headers: requestHeaders,
+  //   );
+  //   if (response.statusCode == 200) {
+  //     debugPrint(response.body);
+  //     APICacheDBModel cacheDBModel = new APICacheDBModel(
+  //         key: 'user_Data', syncData: response.body);
+  //     await APICacheManager().addCacheData(cacheDBModel);
+  //
+  //     return userDataResponseJson(json.decode(response.body));
+  //     // await SharedService.setUserData(userDataResponseJson(response.body) );
+  //     return true;
+  //   } else {
+  //     debugPrint(response.body);
+  //     debugPrint('fail');
+  //     return false;
+  //   }
+  // }
 
-    var userToken =  await SharedService.loginDetails();
-
-    Map<String, String> requestHeaders = {
-      'Content-type': 'application/json',
-      'apiKey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwbXFqcnh4ZWdkcmdmaGZ6YnhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk2NjgyMjAsImV4cCI6MjAzNTI0NDIyMH0.2-8VUqjYHxxXThIBmKgsCN1yStSN-XwKiorcpbitUHk',
-      'Authorization': 'Bearer ${userToken?.token}',
-    };
-
-    debugPrint(userToken!.user?.id);
-    var url = Uri.parse(
-        '${Config.apiHttp}${Config.apiAuth}${Config.getUerDataEndPoint}${userToken.user?.id}');
-    debugPrint(url.toString());
-
-    var response = await client.get(
-      url,
-      headers: requestHeaders,
-    );
-    if (response.statusCode == 200) {
-      debugPrint(response.body);
-      await SharedService.setUserData(userDataResponseJson(response.body) );
-      return true;
-    } else {
-      debugPrint(response.body);
-      debugPrint('fail');
-      return false;
-    }
-  }
-
-  static Future<List<UserDataListModel>> getUserDataList() async {
+  static Future<List<UserDataListModel>> getUserData() async {
 
     var userToken =  await SharedService.loginDetails();
 
@@ -171,8 +176,9 @@ class ApiService{
       for (Map itemData in data) {
         temp.add(UserDataListModel.fromJson(itemData));
       }
-      return temp;
       // await SharedService.setUserData(userDataResponseJson(response.body) );
+      return temp;
+
       // return true;
     } else {
       debugPrint(response.body);
