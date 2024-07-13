@@ -1,4 +1,5 @@
 import 'package:bingolearn/src/Bingo/bingo_start.dart';
+import 'package:bingolearn/src/Notification/notification_screen.dart';
 import 'package:bingolearn/src/User_profile%20/profile.dart';
 import 'package:bingolearn/src/game/game_start.dart';
 import 'package:bingolearn/src/lesson/lesson_dashboard.dart';
@@ -87,9 +88,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             decoration: BoxDecoration(
                               color: colorSecondary,
                               shape: BoxShape.circle,
-                              image: DecorationImage(
+                              image: _userData != null && _userData!.isNotEmpty ? DecorationImage(
                                   image: NetworkImage('${_userData?[0].learningFlag}'),
-                                  fit: BoxFit.cover),
+                                  fit: BoxFit.cover) : null
                             ),
                           ),
                         ),
@@ -138,7 +139,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           GestureDetector(
                               child: Icon(EvaIcons.bellOutline, color: colorPrimary.withOpacity(0.7),),
                             onTap: (){
-                              SharedService.logout(context);
+                              // SharedService.logout(context);
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                    return const NotificationScreen();
+                                  }));
                             },
                           )
                         ],
@@ -319,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                                  return const LessonDashboard();
+                                  return  LessonDashboard(language: _userData?[0].lLanguage, flag: _userData?[0].learningFlag, min: _userData?[0].learningGoal,);
                                 }));
                           },
                         ),
@@ -371,7 +376,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Text('Games', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: colorPrimary),),
                                   Text('Learning make fun!', style: TextStyle(fontSize: 12, color: colorPrimary),)
 
-
                                 ],
                               ),
                             ),
@@ -379,7 +383,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: (){
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                                  return const GameStart();
+                                  return GameStart(language: _userData?[0].lLanguage,);
                                 }));
                           },
                         ),
@@ -431,7 +435,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               onTap: (){
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                      return const Profile();
+                                      return  Profile(flag: '${_userData?[0].learningFlag}', userName: '${_userData?[0].firstName} ${_userData?[0].lastName}',);
                                     }));
                               },
                             ),
@@ -452,14 +456,30 @@ class _HomeScreenState extends State<HomeScreen> {
       getUser(),
     });
   }
-  Future<void> getUser() async {
-    setState(() async {
-      _userData = await ApiService.getUserData();
-    });
 
-    // debugPrint('firstName: ${_userData?[0].firstName}');
-    // debugPrint('middleName: ${_userData?[0].middleName}');
-    // debugPrint('LastName: ${_userData?[0].lastName}');
-    // debugPrint('LastName: ${_userData?[0].learningFlag}');
+  Future<void> getUser() async {
+    try {
+      final userData = await ApiService.getUserData();
+      setState(() {
+        _userData = userData;
+      });
+    } on Exception catch (error) {
+      // Handle API errors here, potentially including redirecting to LandingScreen
+      SharedService.logout(context);
+      debugPrint('Failed to fetch user data: $error');
+      // Navigator.pushAndRemoveUntil(...); // Navigation logic here
+    }
   }
+  // Future<void> _getUser() async {
+  //   try {
+  //     final userData = await ApiService.getUserData();
+  //     setState(() {
+  //       _userData = userData;
+  //     });
+  //   } catch (error) {
+  //     // Handle API errors gracefully (e.g., display an error message)
+  //     debugPrint(error.toString());
+  //   }
+  //
+  // }
 }

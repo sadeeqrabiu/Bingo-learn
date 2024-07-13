@@ -63,44 +63,52 @@ class _ChatAIState extends State<ChatAI> {
                     fontWeight: FontWeight.bold,
                     fontSize: 15),
               ),
-              Gap(height * .02),
-              Container(
-                height: height * .03,
-                width: width * .2,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: colorBlue.withOpacity(0.35)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: width * 0.02,
-                      child: Container(
-                        height: height * 0.05,
-                        decoration: BoxDecoration(
-                          color: colorGreen,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      ' Online',
-                      style: TextStyle(color: colorPrimary, fontSize: 10),
-                    )
-                  ],
-                ),
+              Text(
+                'Conversation',
+                style: TextStyle(
+                    color: colorPrimary,
+                    // fontWeight: FontWeight.bold,
+                    fontSize: 15),
               ),
+              Gap(height * .02),
+              // Container(
+              //   height: height * .03,
+              //   width: width * .2,
+              //   decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(100),
+              //       color: colorBlue.withOpacity(0.35)),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       SizedBox(
+              //         width: width * 0.02,
+              //         child: Container(
+              //           height: height * 0.05,
+              //           decoration: BoxDecoration(
+              //             color: colorGreen,
+              //             shape: BoxShape.circle,
+              //           ),
+              //         ),
+              //       ),
+              //       Text(
+              //         ' Online',
+              //         style: TextStyle(color: colorPrimary, fontSize: 10),
+              //       )
+              //     ],
+              //   ),
+              // ),
             ],
           ),
           toolbarHeight: height * 0.09,
           elevation: 0,
           leading: IconButton(
-            icon: Icon(EvaIcons.close, color: colorPrimary), // Set color
+            icon: Icon(EvaIcons.arrowIosBackOutline, color: colorPrimary), // Set color
             onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                  (route) => false);
+              Navigator.pop(context);
+              // Navigator.pushAndRemoveUntil(
+              //     context,
+              //     MaterialPageRoute(builder: (context) => HomeScreen()),
+              //     (route) => false);
             }, // Handle back navigation
           ),
           // automaticallyImplyLeading: false,
@@ -140,11 +148,6 @@ class _ChatAIState extends State<ChatAI> {
           textColor: colorPrimary
       ),
     );
-  }
-
-
-  introduction(){
-
   }
 
   void _sendMessage(ChatMessage chatMessage) {

@@ -186,6 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                             Flexible(
                               child: TextFormField(
+                                key: const Key('AddEmail'),
                                 controller: emailController,
                                 keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
@@ -276,6 +277,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: TextFormField(
                                 obscureText: isPasswordVisible,
                                 controller: passwordController,
+                                key: const Key('AddPassword'),
                                 keyboardType: TextInputType.visiblePassword,
                                 decoration: InputDecoration(
                                     hintText: 'Password',
@@ -346,11 +348,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   onTap: (){
-                    // SharedService.logout(context);
-                    // Navigator.push(context,
-                    //     MaterialPageRoute(builder: (context) {
-                    //       return const RegEmail();
-                    //     }));
                   },
                 ),
                 SizedBox(
@@ -361,6 +358,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: height * 0.06,
                     width: width ,
                     child: ElevatedButton(
+                      key: const Key('LoginUser'),
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),

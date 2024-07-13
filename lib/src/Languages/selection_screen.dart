@@ -206,44 +206,12 @@ class _SelectionScreenState extends State<SelectionScreen> {
                                 email: widget.email,
                               );
                             }));
-                            // APIServices.getLabDetails();
-                            //     .then((response) => {
-                            //   if(response != null){
-                            //
-                            //   }
-                            // });
-                            // Navigator.push(context,
                           },
                         );
                       },
                     ),
             ),
             SizedBox(height: height * 0),
-            // GestureDetector(
-            //   child: Container(
-            //     height: height * 0.06,
-            //     margin: EdgeInsets.only(
-            //       left: width * 0.05,
-            //       right: width * 0.05,
-            //     ),
-            //     decoration: BoxDecoration(
-            //         borderRadius: BorderRadius.circular(10),
-            //         color: colorMain),
-            //     child: Center(
-            //       child: Text(
-            //         'Continue',
-            //         style: TextStyle(color: colorPrimary),
-            //       ),
-            //     ),
-            //   ),
-            //   onTap: (){
-            //     Navigator.push(context,
-            //         MaterialPageRoute(builder: (context) {
-            //           return const LearningGoal();
-            //         }));
-            //   },
-            //
-            // ),
           ],
         ),
       )),

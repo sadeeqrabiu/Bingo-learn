@@ -50,11 +50,20 @@ dependencies:
   dash_chat_2: ^0.0.21
   palette_generator: ^0.3.3+3
   flutter_card_swiper: ^7.0.1
+  flutter_tts: ^4.0.2
+
 
 
 dev_dependencies:
+  mockito: ^5.4.4
+  build_runner: ^2.0.6
   flutter_test:
     sdk: flutter
+  flutter_tts:
+  flutter_driver:
+      sdk: flutter
+  test:
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

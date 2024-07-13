@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:lottie/lottie.dart';
 
@@ -17,7 +18,14 @@ import '../../core/api_section/api_service.dart';
 import '../tools/colors.dart';
 
 class FlashCard extends ConsumerStatefulWidget {
-  const FlashCard({super.key});
+  const FlashCard({
+    Key? key,
+    required this.language,
+    // required this.correct,
+    // required this.time,
+  }) : super(key: key);
+
+  final String? language;
 
   @override
   ConsumerState<FlashCard> createState() => _FlashCardState();
@@ -25,37 +33,22 @@ class FlashCard extends ConsumerStatefulWidget {
 
 class _FlashCardState extends ConsumerState<FlashCard> {
   final gemini = Gemini.instance;
-
   //current Card
   int currentCard = 10;
-
+  //List of words
   List<WordsModel>? _words;
-
-  // String randomWords()  {
-  //  final randomIndex = _words![Random().nextInt(_words!.length)];
-  //  return randomIndex.toString();
-  // }
-
-  // String getRandomWord(List<WordsModel> wordsList) {
-  //   if (wordsList.isEmpty) {
-  //     throw Exception('Words list cannot be empty'); // Handle empty list
-  //   }
-  //   final randomIndex = Random().nextInt(wordsList.length);
-  //   return wordsList[randomIndex].word;
-  // }
-
   bool introductionSent = false;
   var isLoaded = false;
 
   int correct = 0;
   int inCorrect = 0;
-
   //notify that the user have reach max card
   int flashCardCounter = 0;
 
+  int heartCounter = 5;
+
   //time display
   var timeDisplay = false;
-
   //
   addCorrect() {
     correct = correct++;
@@ -78,6 +71,8 @@ class _FlashCardState extends ConsumerState<FlashCard> {
     // });
   }
 
+
+
   List colorList = [
     colorBlue,
     colorYellow,
@@ -91,43 +86,34 @@ class _FlashCardState extends ConsumerState<FlashCard> {
     colorGreen,
   ];
 
-  // Step 2
-  Timer? countdownTimer;
-  Duration cardTimer = const Duration(minutes: 10);
+  // // Step 2
+  // Timer? countdownTimer;
+  // Duration cardTimer = const Duration(minutes: 10);
 
   /// Timer related methods ///
   // Step 3
-  startTimer() {
-    countdownTimer =
-        Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
-  }
+  // startTimer() {
+  //   countdownTimer =
+  //       Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
+  // }
 
-  // Step 4
-  void stopTimer() {
-    setState(() => countdownTimer!.cancel());
-  }
-
-  // Step 6
-  void setCountDown() {
-    const reduceSecondsBy = 1;
-    setState(() {
-      final seconds = cardTimer.inSeconds - reduceSecondsBy;
-      if (seconds == 0) {
-        // countdownTimer!.cancel();
-        // checkCards();
-        // _streamGenerativeContent();
-        startTimer();
-        // setState(() {
-        //   timeDisplay = true;
-        // });
-        // setState(() {
-        //   timeDisplay = false;
-        // });
-      } else {
-        cardTimer = Duration(seconds: seconds);
-      }
-    });
-  }
+  // // Step 4
+  // void stopTimer() {
+  //   setState(() => countdownTimer!.cancel());
+  // }
+  //
+  // // Step 6
+  // void setCountDown() {
+  //   const reduceSecondsBy = 1;
+  //   setState(() {
+  //     final seconds = cardTimer.inSeconds - reduceSecondsBy;
+  //     if (seconds == 0) {
+  //       startTimer();
+  //     } else {
+  //       cardTimer = Duration(seconds: seconds);
+  //     }
+  //   });
+  // }
 
   @override
   void initState() {
@@ -152,8 +138,8 @@ class _FlashCardState extends ConsumerState<FlashCard> {
     //Time
     //
     String strDigits(int n) => n.toString().padLeft(2, '0');
-    final seconds = strDigits(cardTimer.inSeconds.remainder(60));
-    final minutes = strDigits(cardTimer.inMinutes.remainder(10));
+    // final seconds = strDigits(cardTimer.inSeconds.remainder(60));
+    // final minutes = strDigits(cardTimer.inMinutes.remainder(10));
     return Scaffold(
         backgroundColor: colorPrimary,
         appBar: AppBar(
@@ -228,16 +214,16 @@ class _FlashCardState extends ConsumerState<FlashCard> {
                             ),
                             Row(
                               children: [
-                                Text(
-                                  'Time:',
-                                  style: TextStyle(
-                                      color: colorPrimary,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
+                                SizedBox(
+                                  height: height * 0.03,
+                                  child: SvgPicture.asset(
+                                    'assets/icons/heartIcon.svg',
+                                  ),
                                 ),
-                                if (timeDisplay) Text('$minutes:$seconds',style: TextStyle(color: colorPrimary)),
+                                Gap(width*.01),
+                                Text(heartCounter.toString(), style: TextStyle(color: colorPrimary),),
                               ],
-                            ),
+                            )
                           ],
                         ),
                       ),
@@ -304,7 +290,7 @@ class _FlashCardState extends ConsumerState<FlashCard> {
                                           debugPrint(
                                               flashCardCounter.toString());
                                           debugPrint(correct.toString());
-                                          startTimer();
+                                          // startTimer();
                                           setState(() {
                                             timeDisplay = true;
                                           });
@@ -314,7 +300,8 @@ class _FlashCardState extends ConsumerState<FlashCard> {
                                           debugPrint(_words![index].word);
                                           debugPrint('incorrect');
                                           inCorrect++;
-                                          startTimer();
+                                          heartCounter--;
+                                          // startTimer();
                                           setState(() {
                                             timeDisplay = true;
                                           });
@@ -365,31 +352,22 @@ class _FlashCardState extends ConsumerState<FlashCard> {
 
   void _streamGenerativeContent() {
     //timer
-    startTimer();
+    // startTimer();
     setState(() {
       timeDisplay = true;
     });
-
-
-    //
+    //this is an instruction for user first prompt
     if (introductionSent) {
-      // final words = wordsList[Random().toString()];
       final randomIndex = _words![Random().nextInt(_words!.length)];
-      // randomIndex = randomWordsController.text;
       randomWordsController.text = randomIndex.word;
       debugPrint(randomWordsController.text);
       final prompt = '**System Instructions:**'
           '* **Response Style:**'
           '* Make a short sentence with ${randomWordsController.text} without using ${randomWordsController.text}'
-          '* Show response in English And French and be concise.';
+          '* Show response in English And ${widget.language} and be concise.';
 
-      // checkMatch(){
-      //   if()
-      // }
       print(prompt);
-      // gemini.streamGenerateContent(prompt,generationConfig: GenerationConfig(
-      //   temperature: 1,
-      // ) ).listen((event){});
+
       gemini.streamGenerateContent(prompt,
           generationConfig:
               GenerationConfig(temperature: 1, maxOutputTokens: 200),
@@ -410,7 +388,7 @@ class _FlashCardState extends ConsumerState<FlashCard> {
       randomWordsController.text = randomIndex.word;
       debugPrint(randomWordsController.text);
       final prompt =
-          'Make a short sentence with ${randomWordsController.text} without using ${randomWordsController.text} in English And French and be concise.';
+          'Make a short sentence with ${randomWordsController.text} without using ${randomWordsController.text} in ${widget.language} and a hint in english and be concise.';
 
       debugPrint(prompt);
       gemini.streamGenerateContent(prompt,

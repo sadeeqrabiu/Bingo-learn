@@ -7,7 +7,14 @@ import 'package:gap/gap.dart';
 import '../tools/colors.dart';
 
 class GameStart extends StatefulWidget {
-  const GameStart({super.key});
+  const GameStart({
+    Key? key,
+    required this.language,
+    // required this.correct,
+    // required this.time,
+  }) : super(key: key);
+
+  final String? language;
 
   @override
   State<GameStart> createState() => _GameStartState();
@@ -137,7 +144,7 @@ class _GameStartState extends State<GameStart> {
                       onTap: (){
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                              return const FlashCard();
+                              return FlashCard(language: widget.language,);
                             }));
                       },
                     )

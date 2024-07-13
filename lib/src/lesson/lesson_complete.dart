@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:lottie/lottie.dart';
 
 import '../tools/colors.dart';
 
@@ -45,76 +46,27 @@ class _LessonCompleteState extends State<LessonComplete> {
                 padding: EdgeInsets.only(left: width * .05, right: width * .05),
                 child: Column(
                   children: [
-                    Gap(height * .2),
+                    Gap(height * .0),
                     Center(
                       child: Column(
                         children: [
                           SizedBox(
-                            // margin: EdgeInsets.only(right: width*0.04, bottom: height*.025),
-                            height: height * 0.17,
-                            child: SvgPicture.asset(
-                              'assets/svgs/BingoOne.svg',
-                            ),
-                          ),
-                          Gap(height*.02),
+                              width: width,
+                              height: height * .2,
+                              child: Lottie.asset('assets/lottie/splash.json')),
+                          SizedBox(
+                              width: width ,
+                              height: height * .2,
+                              child: Lottie.asset('assets/lottie/completedTask.json')),
+
                           Text(
-                            'Lesson Completed',
+                            'You just completed your first lesson',
                             style: TextStyle(
                                 color: colorPrimary,
                                 fontWeight: FontWeight.bold),
                           ),
-                          Gap(height*.05),
-                          Container(
-                            height: height*.05,
-                            width: width*.7,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: colorPrimary)
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: width*.02),
-                              child: Row(
-                                children: [
-                                  Text('Star: 4', style: TextStyle(color: colorPrimary ),)
-                                ],
-                              ),
-                            ),
-                          ),
-                          Gap(height*.04),
-                          Container(
-                            height: height*.05,
-                            width: width*.7,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: colorPrimary)
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: width*.02),
-                              child: Row(
-                                children: [
-                                  Text('Time: 10min', style: TextStyle(color: colorPrimary ),)
-                                ],
-                              ),
-                            ),
-                          ),
-                          Gap(height*.04),
-                          Container(
-                            height: height*.05,
-                            width: width*.7,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: colorPrimary)
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: width*.02),
-                              child: Row(
-                                children: [
-                                  Text('Score: 6/10', style: TextStyle(color: colorPrimary ),)
-                                ],
-                              ),
-                            ),
-                          ),
 
+                          Gap(height*.05),
                           Gap(height*.08),
                           GestureDetector(
                             child: Container(

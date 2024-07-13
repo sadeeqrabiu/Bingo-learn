@@ -254,26 +254,7 @@ class _ChatState extends State<Chat> {
                         );
                       },
                     ),
-                    // Expanded(
-                    //   child: Padding(
-                    //     padding: const EdgeInsets.all(10.0),
-                    //     child: SingleChildScrollView(
-                    //       child: GeminiResponseTypeView(
-                    //           builder: ((context, child, response, loading) {
-                    //             if (loading) {
-                    //               return SizedBox(
-                    //                   width: width * .8,
-                    //                   height: height * .13,
-                    //                   child: Lottie.asset('assets/lottie/loading.json'));
-                    //             }
-                    //             if (response != null) {
-                    //               return Text(response, style: TextStyle(color: colorPrimary),);
-                    //             }
-                    //             return const SizedBox();
-                    //           })),
-                    //     ),
-                    //   ),
-                    // ),
+
 
                   ],
                 ))
@@ -328,10 +309,6 @@ class _ChatState extends State<Chat> {
       _userData = await ApiService.getUserData();
     });
 
-    // debugPrint('firstName: ${_userData?[0].firstName}');
-    // debugPrint('middleName: ${_userData?[0].middleName}');
-    // debugPrint('LastName: ${_userData?[0].lastName}');
-    // debugPrint('LastName: ${_userData?[0].learningFlag}');
   }
   void _streamGenerativeContent() {
     // fruit = Globals.fruits[Random().nextInt(Globals.fruits.length)];
@@ -341,19 +318,6 @@ class _ChatState extends State<Chat> {
     gemini.streamGenerateContent(prompt,generationConfig: GenerationConfig(
       temperature: 1,
     ) ).listen((event){});
-    // gemini.streamGenerateContent(prompt,
-    //     generationConfig: GenerationConfig(
-    //       temperature: 1,
-    //     ),
-    //     safetySettings: [
-    //       SafetySetting(
-    //           category: SafetyCategory.hateSpeech,
-    //           threshold: SafetyThreshold.blockLowAndAbove),
-    //       SafetySetting(
-    //           category: SafetyCategory.harassment,
-    //           threshold: SafetyThreshold.blockLowAndAbove)
-    //     ]).listen((event) {
-    //   ref.read(Providers.uiStateNotifier.notifier).updateState(UIState.loaded);
-    // });
+
   }
 }
