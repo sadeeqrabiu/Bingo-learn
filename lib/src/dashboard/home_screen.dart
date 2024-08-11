@@ -94,12 +94,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                        // onTap: () {
-                        //   Navigator.push(context,
-                        //       MaterialPageRoute(builder: (context) {
-                        //         return const UserProfile();
-                        //       }));
-                        // },
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                                return Profile(flag: '${_userData?[0].learningFlag}', userName: '${_userData?[0].firstName} ${_userData?[0].lastName}');
+                              }));
+                        },
                       ),
                      Gap(width*.0),
                      Icon(EvaIcons.arrowIosDownward, color: colorPrimary,),
@@ -123,15 +123,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               'assets/icons/heartIcon.svg',
                             ),
                           ),
-
-                          // Text('1/10', style: TextStyle(color: colorPrimary),),
-                          // Gap(width*.05),
-                          // SizedBox(
-                          //   height: height * 0.03,
-                          //   child: SvgPicture.asset(
-                          //     'assets/icons/heartIcon.svg',
-                          //   ),
-                          // ),
                           Gap(width*.01),
                           Text('5', style: TextStyle(color: colorPrimary),),
 
@@ -172,10 +163,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                child: Column(
                                  crossAxisAlignment: CrossAxisAlignment.start,
                                  children: [
-                                   Text('Learned Today', style: TextStyle(fontSize: 18, color: colorPrimary, fontWeight: FontWeight.bold),),
+                                   Text('Learning Goal', style: TextStyle(fontSize: 18, color: colorPrimary, fontWeight: FontWeight.bold),),
                                    Row(
                                      children: [
-                                       Text('10min/', style: TextStyle(fontSize: 18, color: colorPrimary, fontWeight: FontWeight.bold),),
+                                       Text('Today/ ', style: TextStyle(fontSize: 18, color: colorPrimary, fontWeight: FontWeight.bold),),
                                        Text('${_userData?[0].learningGoal}min', style: TextStyle(fontSize: 15, color: colorYellow),),
                                      ],
                                    ),
@@ -258,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ),
                                     Gap(height*.03),
-                                    Text('Talk With', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: colorPrimary),),
+                                    Text('Learn With', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: colorPrimary),),
                                     Text('Bingo', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: colorPrimary),),
                                     Text('Let’s try it now!', style: TextStyle(fontSize: 12, color: colorPrimary),)
 
@@ -373,7 +364,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   Gap(height*.07),
-                                  Text('Games', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: colorPrimary),),
+                                  Text('Game', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: colorPrimary),),
                                   Text('Learning make fun!', style: TextStyle(fontSize: 12, color: colorPrimary),)
 
                                 ],

@@ -388,7 +388,7 @@ class _FlashCardState extends ConsumerState<FlashCard> {
       randomWordsController.text = randomIndex.word;
       debugPrint(randomWordsController.text);
       final prompt =
-          'Make a short sentence with ${randomWordsController.text} without using ${randomWordsController.text} in ${widget.language} and a hint in english and be concise.';
+          'Make a short sentence with ${randomWordsController.text} without using ${randomWordsController.text} in ${widget.language} and english and be concise.';
 
       debugPrint(prompt);
       gemini.streamGenerateContent(prompt,
