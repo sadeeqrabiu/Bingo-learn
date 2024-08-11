@@ -3,10 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
+import '../../core/local_store/shared_service.dart';
 import '../tools/colors.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  const Profile({
+    Key? key,
+    required this.flag,
+    required this.userName,
+  }) : super(key: key);
+
+  final String? flag;
+  final String? userName;
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -26,6 +34,22 @@ class _ProfileState extends State<Profile> {
         toolbarHeight: height * 0.02,
         elevation: 0,
         automaticallyImplyLeading: false,
+      ),
+      bottomNavigationBar: BottomAppBar(
+        height: height*0.08,
+        color: colorPrimary,
+        child: GestureDetector(
+          child: SizedBox(
+            height: height * 0.09,
+            width: width,
+            child: SvgPicture.asset(
+              'assets/svgs/SignOut.svg',
+            ),
+          ),
+          onTap: (){
+            SharedService.logout(context);
+          },
+        ),
       ),
       body: SafeArea(
           child: Padding(
@@ -76,9 +100,9 @@ class _ProfileState extends State<Profile> {
                     decoration: BoxDecoration(
                       color: colorSecondary,
                       shape: BoxShape.circle,
-                      // image: DecorationImage(
-                      //     image: NetworkImage(profileModel.profileImg),
-                      //     fit: BoxFit.cover),
+                      image: DecorationImage(
+                          image: NetworkImage('${widget.flag}'),
+                          fit: BoxFit.cover),
                     ),
                   ),
                 ),
@@ -99,9 +123,9 @@ class _ProfileState extends State<Profile> {
               ],
             ),
             Gap(height*.01),
-            const Row(
+             Row(
               children: [
-                Text('User Name', style: TextStyle(fontWeight: FontWeight.bold),)
+                Text('${widget.userName}', style: TextStyle(fontWeight: FontWeight.bold),)
               ],
             ),
             Gap(height*.02),
@@ -127,7 +151,7 @@ class _ProfileState extends State<Profile> {
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       )),

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 
 class LandingScreen extends StatefulWidget {
   const LandingScreen({super.key});
@@ -47,17 +48,22 @@ class _LandingScreenState extends State<LandingScreen> {
                 ],
               ),
               SizedBox(
-                height: height * .04,
+                height: height * .01,
               ),
+              //Lottie Animation
               SizedBox(
-                height: height * 0.35,
-                width: width,
-                child: SvgPicture.asset(
-                  'assets/svgs/BingoLand.svg',
-                ),
-              ),
+                  width: width * 8.5,
+                  height: height * .4,
+                  child: Lottie.asset('assets/lottie/GlobalLearn.json')),
+              // SizedBox(
+              //   height: height * 0.35,
+              //   width: width,
+              //   child: SvgPicture.asset(
+              //     'assets/svgs/BingoLand.svg',
+              //   ),
+              // ),
               SizedBox(
-                height: height * 0.04,
+                height: height * 0.02,
               ),
               const Row(
                 children: [
@@ -88,7 +94,7 @@ class _LandingScreenState extends State<LandingScreen> {
                   SizedBox(
                       width: width*.9,
                       child: const Text(
-                          'Dive into personalized lessons, interactive games, and real-time learning with AI. Experience fun and effective language learning anytime, anywhere.', style: TextStyle(color: Colors.white), ))
+                          'Dive into personalized lessons, interactive game, and real-time learning with AI. Experience fun and effective language learning anytime, anywhere.', style: TextStyle(color: Colors.white), ))
                 ],
               ),
 
@@ -119,5 +125,5 @@ class _LandingScreenState extends State<LandingScreen> {
     ));
   }
 }
-// This is the starting Point of my Individual Project
+// This is the starting Point of the Team Gemini Competition
 // that it has a State object (defined below) that contains fields that affect

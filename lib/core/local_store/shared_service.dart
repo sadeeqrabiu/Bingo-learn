@@ -1,6 +1,7 @@
 
 
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:api_cache_manager/models/cache_db_model.dart';
@@ -14,6 +15,7 @@ import '../models/login/login_response.dart';
 import '../models/sign_up/sign_up_response.dart';
 
 class SharedService{
+
 
   static Future<void> setLoginDetails(LoginResponseModel model) async {
     APICacheDBModel cacheDBModel = APICacheDBModel(key: "access_token", syncData: jsonEncode(model.toJson()));
@@ -52,26 +54,6 @@ class SharedService{
     }
     return null;
   }
-
-
-  //set UserData for offline use
-  static Future<void> setUserData(UserDataModel model) async {
-    APICacheDBModel cacheDBModel = APICacheDBModel(key: "user_Data", syncData: jsonEncode(model));
-    await APICacheManager().addCacheData(cacheDBModel);
-    debugPrint(cacheDBModel.toString());
-  }
-
-
-  //GetUser data
-  static Future<UserDataModel?> getUserData() async {
-    var isKeyExit = await APICacheManager().isAPICacheKeyExist("user_Data");
-    if (isKeyExit) {
-      var cacheData = await APICacheManager().getCacheData("user_Data");
-      return userDataResponseJson(cacheData.syncData);
-    }
-    return null;
-  }
-
 
   //Logout the user
   static Future<void> logout(BuildContext context) async {

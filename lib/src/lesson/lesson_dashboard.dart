@@ -5,11 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:lottie/lottie.dart';
 
 import '../tools/colors.dart';
 
 class LessonDashboard extends StatefulWidget {
-  const LessonDashboard({super.key});
+  const LessonDashboard({
+
+    Key? key,
+    required this.language,
+    required this.flag,
+    required this.min
+  }) : super(key: key);
+
+  final String? language;
+  final String? flag;
+  final String? min;
 
   @override
   State<LessonDashboard> createState() => _LessonDashboardState();
@@ -75,18 +86,6 @@ class _LessonDashboardState extends State<LessonDashboard> {
                             SizedBox(
                               height: height * 0.03,
                               child: SvgPicture.asset(
-                                'assets/icons/shieldIcon.svg',
-                              ),
-                            ),
-                            Gap(width * .01),
-                            Text(
-                              '1/10',
-                              style: TextStyle(color: colorPrimary),
-                            ),
-                            Gap(width * .05),
-                            SizedBox(
-                              height: height * 0.03,
-                              child: SvgPicture.asset(
                                 'assets/icons/heartIcon.svg',
                               ),
                             ),
@@ -108,20 +107,20 @@ class _LessonDashboardState extends State<LessonDashboard> {
                     Row(
                       children: [
                         SizedBox(
-                          width: width * 0.13,
+                          width: width * 0.1,
                           child: Container(
-                            height: height * 0.065,
+                            height: height * 0.06,
                             decoration: BoxDecoration(
                               color: colorSecondary,
                               shape: BoxShape.circle,
-                              // image: DecorationImage(
-                              //     image: NetworkImage(profileModel.profileImg),
-                              //     fit: BoxFit.cover),
+                              image: DecorationImage(
+                                  image: NetworkImage('${widget.flag}'),
+                                  fit: BoxFit.cover),
                             ),
                           ),
                         ),
-                        Gap(width*.01),
-                        Text('French', style: TextStyle(color: colorPrimary, fontSize: 15,fontWeight: FontWeight.bold),)
+                        Gap(width*.02),
+                        Text('${widget.language}', style: TextStyle(color: colorPrimary, fontSize: 15,fontWeight: FontWeight.bold),)
                       ],
                     ),
                     //Card
@@ -155,7 +154,7 @@ class _LessonDashboardState extends State<LessonDashboard> {
                                       child: Container(
                                         height: height * 0.07,
                                         decoration: BoxDecoration(
-                                          border: Border.all(color: colorBlueSecond.withOpacity(0.5), width: 3),
+                                          border: Border.all(color: colorBlueSecond.withOpacity(0.5), width: 6),
                                           color: colorSecondary,
                                           shape: BoxShape.circle,
                                           // image: DecorationImage(
@@ -166,7 +165,7 @@ class _LessonDashboardState extends State<LessonDashboard> {
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Text('40', style: TextStyle(color: colorPrimary, fontSize: 11,)),
+                                              Text('${widget.min}', style: TextStyle(color: colorPrimary, fontSize: 11,)),
                                               Text('min',style: TextStyle(color: colorPrimary, fontSize: 11,))
                                             ],
                                           ),
@@ -179,7 +178,7 @@ class _LessonDashboardState extends State<LessonDashboard> {
                                       child: Container(
                                         height: height * 0.07,
                                         decoration: BoxDecoration(
-                                          border: Border.all(color: colorYellow.withOpacity(0.5), width: 3),
+                                          border: Border.all(color: colorYellow.withOpacity(0.5), width: 6),
                                           color: colorSecondary,
                                           shape: BoxShape.circle,
                                           // image: DecorationImage(
@@ -203,7 +202,7 @@ class _LessonDashboardState extends State<LessonDashboard> {
                                       child: Container(
                                         height: height * 0.07,
                                         decoration: BoxDecoration(
-                                          border: Border.all(color: colorRed.withOpacity(0.4), width: 3),
+                                          border: Border.all(color: colorRed.withOpacity(0.4), width: 6),
                                           color: colorSecondary,
                                           shape: BoxShape.circle,
                                           // image: DecorationImage(
@@ -214,7 +213,7 @@ class _LessonDashboardState extends State<LessonDashboard> {
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Text('20', style: TextStyle(color: colorPrimary, fontSize: 11,fontWeight: FontWeight.bold)),
+                                              Text('10', style: TextStyle(color: colorPrimary, fontSize: 11,fontWeight: FontWeight.bold)),
                                               Text('phrases',  style: TextStyle(color: colorPrimary, fontSize: 09,fontWeight: FontWeight.bold))
                                             ],
                                           ),
@@ -251,10 +250,11 @@ class _LessonDashboardState extends State<LessonDashboard> {
                             children: [
                               Row(
                                 children: [
-                                  Container(
-                                    height: height*.02,
-                                    width: width*.05,
-                                    color: colorGrey,
+                                  SizedBox(
+                                    height: height * 0.03,
+                                    child: SvgPicture.asset(
+                                      'assets/svgs/HelloIcon.svg',
+                                    ),
                                   ),
                                   Gap(width*.02),
                                   const Text('Hello'),
@@ -273,8 +273,96 @@ class _LessonDashboardState extends State<LessonDashboard> {
                       onTap: (){
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                                return const Lesson();
+                                return  Lesson(language: widget.language,);
                               }));
+                      },
+                    ),
+                    Gap(height*.01),
+                    GestureDetector(
+                      child: Container(
+                        height: height*.06,
+                        width: width,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: colorPrimary
+                        ),
+                        child: Padding(
+                          padding:  EdgeInsets.only(left: width*.02, right: width*.02),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    height: height * 0.03,
+                                    child: SvgPicture.asset(
+                                      'assets/svgs/SentenceIcon.svg',
+                                    ),
+                                  ),
+                                  Gap(width*.02),
+                                  const Text('Sentence'),
+                                ],
+                              ),
+
+                              SizedBox(
+                                height: height*.02,
+                                width: width*.05,
+                              ),
+
+                            ],
+                          ),
+                        ),
+                      ),
+                      onTap: (){
+                        // Navigator.push(context,
+                        //     MaterialPageRoute(builder: (context) {
+                        //       return const Lesson();
+                        //     }));
+                        dialogBox();
+                      },
+                    ),
+                    Gap(height*.01),
+                    GestureDetector(
+                      child: Container(
+                        height: height*.06,
+                        width: width,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: colorPrimary
+                        ),
+                        child: Padding(
+                          padding:  EdgeInsets.only(left: width*.02, right: width*.02),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    height: height * 0.03,
+                                    child: SvgPicture.asset(
+                                      'assets/svgs/NumbersIcon.svg',
+                                    ),
+                                  ),
+                                  Gap(width*.02),
+                                  const Text('Numbers'),
+                                ],
+                              ),
+
+                              SizedBox(
+                                height: height*.02,
+                                width: width*.05,
+                              ),
+
+                            ],
+                          ),
+                        ),
+                      ),
+                      onTap: (){
+                        dialogBox();
+                      //   Navigator.push(context,
+                      //       MaterialPageRoute(builder: (context) {
+                      //         return const Lesson();
+                      //       }));
                       },
                     ),
 
@@ -282,5 +370,71 @@ class _LessonDashboardState extends State<LessonDashboard> {
                 ))
           ],
         ));
+  }
+  //Alert Dialog
+  dialogBox() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          //Media Query
+          final double height = MediaQuery.of(context).size.height;
+          final double width = MediaQuery.of(context).size.width;
+          return Dialog(
+            shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            backgroundColor: colorPrimary,
+            child: SizedBox(
+              height: height * 0.15,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Center(
+                        child: Column(
+                          children: [
+                            Text(
+                              'Lesson not available',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        )),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: width * .15,
+                          right: width * .15,
+                          top: height * .02),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            child: Container(
+                              height: height * .035,
+                              width: width * .2,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: colorSecondary),
+                                color: colorPrimary,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Cancel',
+                                  style: TextStyle(color: colorBlack),
+                                ),
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 }

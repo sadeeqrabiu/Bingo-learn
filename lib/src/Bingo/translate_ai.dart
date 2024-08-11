@@ -9,7 +9,13 @@ import '../tools/colors.dart';
 
 
 class TranslateAi extends StatefulWidget {
-  const TranslateAi({super.key});
+
+  const TranslateAi({
+    Key? key,
+    required this.language,
+  }) : super(key: key);
+
+  final String? language;
 
   @override
   State<TranslateAi> createState() => _TranslateAiState();
@@ -44,44 +50,46 @@ class _TranslateAiState extends State<TranslateAi> {
                     fontWeight: FontWeight.bold,
                     fontSize: 15),
               ),
-              Gap(height * .02),
-              Container(
-                height: height * .03,
-                width: width * .2,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: colorBlue.withOpacity(0.35)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: width * 0.02,
-                      child: Container(
-                        height: height * 0.05,
-                        decoration: BoxDecoration(
-                          color: colorGreen,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      ' Online',
-                      style: TextStyle(color: colorPrimary, fontSize: 10),
-                    )
-                  ],
-                ),
-              ),
+              Gap(height * .005),
+              Text('Translation',style: TextStyle(color: colorPrimary, fontSize: 15),)
+              // Container(
+              //   height: height * .03,
+              //   width: width * .2,
+              //   decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(100),
+              //       color: colorBlue.withOpacity(0.35)),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       SizedBox(
+              //         width: width * 0.02,
+              //         child: Container(
+              //           height: height * 0.05,
+              //           decoration: BoxDecoration(
+              //             color: colorGreen,
+              //             shape: BoxShape.circle,
+              //           ),
+              //         ),
+              //       ),
+              //       Text(
+              //         ' Online',
+              //         style: TextStyle(color: colorPrimary, fontSize: 10),
+              //       )
+              //     ],
+              //   ),
+              // ),
             ],
           ),
           toolbarHeight: height * 0.09,
           elevation: 0,
           leading: IconButton(
-            icon: Icon(EvaIcons.close, color: colorPrimary), // Set color
+            icon: Icon(EvaIcons.arrowIosBackOutline, color: colorPrimary), // Set color
             onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                      (route) => false);
+              Navigator.pop(context);
+              // Navigator.pushAndRemoveUntil(
+              //     context,
+              //     MaterialPageRoute(builder: (context) => HomeScreen()),
+              //         (route) => false);
             }, // Handle back navigation
           ),
           // automaticallyImplyLeading: false,
@@ -193,12 +201,24 @@ class _TranslateAiState extends State<TranslateAi> {
 
     //Gemini
     try {
-      String translation = 'what\'s ${chatMessage.text}in japanese and explain in short.';
+      final promptInstruction =
+          '**System Instructions:**'
+          '* **Role:** Language translation'
+          '* **Language:** ${widget.language}'
+          '* **Response Style:**'
+          '* Use plain text without asterisks (***) using any other formatting that the user will understand.'
+          '* what\'s ${chatMessage.text} in ${widget.language}';
+
+       debugPrint(promptInstruction);
 
       // gemini.streamGenerateContent(translation,generationConfig: GenerationConfig(
       //   temperature: 1,
       // ) ).listen((event){});
-      gemini.streamGenerateContent(translation).listen((event) {
+      gemini.streamGenerateContent(
+          promptInstruction,
+          generationConfig:
+          GenerationConfig(temperature: 1, maxOutputTokens: 100),
+      ).listen((event) {
         ChatMessage? lastMessage = messages.firstOrNull;
         if (lastMessage != null && lastMessage.user == geminiUser) {
           lastMessage = messages.removeAt(0);

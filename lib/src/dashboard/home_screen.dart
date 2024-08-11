@@ -1,4 +1,5 @@
 import 'package:bingolearn/src/Bingo/bingo_start.dart';
+import 'package:bingolearn/src/Notification/notification_screen.dart';
 import 'package:bingolearn/src/User_profile%20/profile.dart';
 import 'package:bingolearn/src/game/game_start.dart';
 import 'package:bingolearn/src/lesson/lesson_dashboard.dart';
@@ -12,6 +13,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+import '../../core/api_section/api_service.dart';
+import '../../core/local_store/shared_service.dart';
+import '../../core/models/user/usesr_data.dart';
 import '../tools/colors.dart';
 
 
@@ -31,6 +35,16 @@ class _HomeScreenState extends State<HomeScreen> {
   double timeSpent = 10.0; // Example: 10 minutes spent
 
   // var time = 0.3;
+
+  @override
+  void initState() {
+    super.initState();
+    // checkTime();
+    // fetchData();
+    getUser();
+  }
+  List<UserDataListModel>? _userData;
+
 
   @override
   Widget build(BuildContext context) {
@@ -68,24 +82,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       GestureDetector(
                         child: SizedBox(
-                          width: width * 0.13,
+                          width: width * 0.1,
                           child: Container(
                             height: height * 0.065,
                             decoration: BoxDecoration(
                               color: colorSecondary,
                               shape: BoxShape.circle,
-                              // image: DecorationImage(
-                              //     image: NetworkImage(profileModel.profileImg),
-                              //     fit: BoxFit.cover),
+                              image: _userData != null && _userData!.isNotEmpty ? DecorationImage(
+                                  image: NetworkImage('${_userData?[0].learningFlag}'),
+                                  fit: BoxFit.cover) : null
                             ),
                           ),
                         ),
-                        // onTap: () {
-                        //   Navigator.push(context,
-                        //       MaterialPageRoute(builder: (context) {
-                        //         return const UserProfile();
-                        //       }));
-                        // },
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                                return Profile(flag: '${_userData?[0].learningFlag}', userName: '${_userData?[0].firstName} ${_userData?[0].lastName}');
+                              }));
+                        },
                       ),
                      Gap(width*.0),
                      Icon(EvaIcons.arrowIosDownward, color: colorPrimary,),
@@ -109,20 +123,20 @@ class _HomeScreenState extends State<HomeScreen> {
                               'assets/icons/heartIcon.svg',
                             ),
                           ),
-
-                          // Text('1/10', style: TextStyle(color: colorPrimary),),
-                          // Gap(width*.05),
-                          // SizedBox(
-                          //   height: height * 0.03,
-                          //   child: SvgPicture.asset(
-                          //     'assets/icons/heartIcon.svg',
-                          //   ),
-                          // ),
                           Gap(width*.01),
                           Text('5', style: TextStyle(color: colorPrimary),),
 
                           Gap(width*.1),
-                          Icon(EvaIcons.bellOutline, color: colorPrimary.withOpacity(0.7),)
+                          GestureDetector(
+                              child: Icon(EvaIcons.bellOutline, color: colorPrimary.withOpacity(0.7),),
+                            onTap: (){
+                              // SharedService.logout(context);
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                    return const NotificationScreen();
+                                  }));
+                            },
+                          )
                         ],
                       ),
 
@@ -149,11 +163,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                child: Column(
                                  crossAxisAlignment: CrossAxisAlignment.start,
                                  children: [
-                                   Text('Learned Today', style: TextStyle(fontSize: 18, color: colorPrimary, fontWeight: FontWeight.bold),),
+                                   Text('Learning Goal', style: TextStyle(fontSize: 18, color: colorPrimary, fontWeight: FontWeight.bold),),
                                    Row(
                                      children: [
-                                       Text('10min/', style: TextStyle(fontSize: 18, color: colorPrimary, fontWeight: FontWeight.bold),),
-                                       Text('15min', style: TextStyle(fontSize: 15, color: colorYellow),),
+                                       Text('Today/ ', style: TextStyle(fontSize: 18, color: colorPrimary, fontWeight: FontWeight.bold),),
+                                       Text('${_userData?[0].learningGoal}min', style: TextStyle(fontSize: 15, color: colorYellow),),
                                      ],
                                    ),
                                  ],
@@ -235,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ),
                                     Gap(height*.03),
-                                    Text('Talk With', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: colorPrimary),),
+                                    Text('Learn With', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: colorPrimary),),
                                     Text('Bingo', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: colorPrimary),),
                                     Text('Let’s try it now!', style: TextStyle(fontSize: 12, color: colorPrimary),)
 
@@ -301,7 +315,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                                  return const LessonDashboard();
+                                  return  LessonDashboard(language: _userData?[0].lLanguage, flag: _userData?[0].learningFlag, min: _userData?[0].learningGoal,);
                                 }));
                           },
                         ),
@@ -350,9 +364,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   Gap(height*.07),
-                                  Text('Games', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: colorPrimary),),
+                                  Text('Game', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: colorPrimary),),
                                   Text('Learning make fun!', style: TextStyle(fontSize: 12, color: colorPrimary),)
-
 
                                 ],
                               ),
@@ -361,7 +374,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: (){
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                                  return const GameStart();
+                                  return GameStart(language: _userData?[0].lLanguage,);
                                 }));
                           },
                         ),
@@ -413,7 +426,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               onTap: (){
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                      return const Profile();
+                                      return  Profile(flag: '${_userData?[0].learningFlag}', userName: '${_userData?[0].firstName} ${_userData?[0].lastName}',);
                                     }));
                               },
                             ),
@@ -428,4 +441,36 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ));
   }
+
+  void fetchData() async {
+    ApiService.getUserData().then((response) => {
+      getUser(),
+    });
+  }
+
+  Future<void> getUser() async {
+    try {
+      final userData = await ApiService.getUserData();
+      setState(() {
+        _userData = userData;
+      });
+    } on Exception catch (error) {
+      // Handle API errors here, potentially including redirecting to LandingScreen
+      SharedService.logout(context);
+      debugPrint('Failed to fetch user data: $error');
+      // Navigator.pushAndRemoveUntil(...); // Navigation logic here
+    }
+  }
+  // Future<void> _getUser() async {
+  //   try {
+  //     final userData = await ApiService.getUserData();
+  //     setState(() {
+  //       _userData = userData;
+  //     });
+  //   } catch (error) {
+  //     // Handle API errors gracefully (e.g., display an error message)
+  //     debugPrint(error.toString());
+  //   }
+  //
+  // }
 }

@@ -11,7 +11,13 @@ import 'package:lottie/lottie.dart';
 import '../tools/colors.dart';
 
 class ChatAI extends StatefulWidget {
-  const ChatAI({super.key});
+  const ChatAI({
+    Key? key,
+    required this.language,
+  }) : super(key: key);
+
+  final String? language;
+
 
   @override
   State<ChatAI> createState() => _ChatAIState();
@@ -28,6 +34,13 @@ class _ChatAIState extends State<ChatAI> {
   ChatUser currentUser = ChatUser(id: "0",);
 
   ChatUser geminiUser = ChatUser(id: "1", );
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
 
   TextEditingController promptController = TextEditingController();
 
@@ -50,44 +63,52 @@ class _ChatAIState extends State<ChatAI> {
                     fontWeight: FontWeight.bold,
                     fontSize: 15),
               ),
-              Gap(height * .02),
-              Container(
-                height: height * .03,
-                width: width * .2,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: colorBlue.withOpacity(0.35)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: width * 0.02,
-                      child: Container(
-                        height: height * 0.05,
-                        decoration: BoxDecoration(
-                          color: colorGreen,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      ' Online',
-                      style: TextStyle(color: colorPrimary, fontSize: 10),
-                    )
-                  ],
-                ),
+              Text(
+                'Conversation',
+                style: TextStyle(
+                    color: colorPrimary,
+                    // fontWeight: FontWeight.bold,
+                    fontSize: 15),
               ),
+              Gap(height * .02),
+              // Container(
+              //   height: height * .03,
+              //   width: width * .2,
+              //   decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(100),
+              //       color: colorBlue.withOpacity(0.35)),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       SizedBox(
+              //         width: width * 0.02,
+              //         child: Container(
+              //           height: height * 0.05,
+              //           decoration: BoxDecoration(
+              //             color: colorGreen,
+              //             shape: BoxShape.circle,
+              //           ),
+              //         ),
+              //       ),
+              //       Text(
+              //         ' Online',
+              //         style: TextStyle(color: colorPrimary, fontSize: 10),
+              //       )
+              //     ],
+              //   ),
+              // ),
             ],
           ),
           toolbarHeight: height * 0.09,
           elevation: 0,
           leading: IconButton(
-            icon: Icon(EvaIcons.close, color: colorPrimary), // Set color
+            icon: Icon(EvaIcons.arrowIosBackOutline, color: colorPrimary), // Set color
             onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                  (route) => false);
+              Navigator.pop(context);
+              // Navigator.pushAndRemoveUntil(
+              //     context,
+              //     MaterialPageRoute(builder: (context) => HomeScreen()),
+              //     (route) => false);
             }, // Handle back navigation
           ),
           // automaticallyImplyLeading: false,
@@ -129,11 +150,6 @@ class _ChatAIState extends State<ChatAI> {
     );
   }
 
-
-  introduction(){
-
-  }
-
   void _sendMessage(ChatMessage chatMessage) {
 
     if(!introductionSent){
@@ -141,14 +157,13 @@ class _ChatAIState extends State<ChatAI> {
       setState(() {
         messages = [chatMessage, ...messages];
       });
-
-      const promptInstruction =
+      final promptInstruction =
           '**System Instructions:**'
           '* You are a Language Learning Assistant for Bingo Learn.'
           '* Be friendly, helpful, and encouraging.'
           '**Prompts:**'
           '* When the user starts a first session:'
-          '>Hi there!   Welcome to Bingo Learn. How can I help you practice [French] today?';
+          '>Hi there!   Welcome to Bingo Learn. How can I help you practice ${widget.language} today?';
 
 
       //Gemini
@@ -189,11 +204,11 @@ class _ChatAIState extends State<ChatAI> {
         messages = [chatMessage, ...messages];
       });
 
-      const promptInstruction =
+      final promptInstruction =
     '**System Instructions:**'
     '* **Role:** Language Learning Assistant'
     '* **Personality:** Friendly, helpful, and encouraging'
-    '* **Language:** French'
+    '* **Language:** ${widget.language}'
     '* **Response Style:**'
     '* Use plain text without asterisks (***) using any other formatting that the user will understand.'
     '* Focus on clear and concise communication.'
@@ -204,6 +219,7 @@ class _ChatAIState extends State<ChatAI> {
       //Gemini
       try {
         String question = promptInstruction + chatMessage.text;
+        debugPrint(widget.language);
         gemini.streamGenerateContent(
           question,
         ).listen((event) {
@@ -214,7 +230,6 @@ class _ChatAIState extends State<ChatAI> {
             String response = event.content?.parts?.fold(
                 "", (previous, current) => "$previous ${current.text}") ??
                 "";
-
             lastMessage.text += response;
             setState(() {
               messages = [lastMessage!, ...messages];

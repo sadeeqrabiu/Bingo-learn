@@ -1,20 +1,66 @@
+import 'dart:math';
+
+import 'package:bingolearn/core/lession/lesson_data.dart';
+import 'package:bingolearn/core/lession/lesson_model.dart';
 import 'package:bingolearn/src/lesson/lesson_complete.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:gap/gap.dart';
+import 'package:lottie/lottie.dart';
 
 import '../tools/colors.dart';
 
 
 class Lesson extends StatefulWidget {
-  const Lesson({super.key});
+  const Lesson({
+    Key? key,
+    required this.language,
+  }) : super(key: key);
+
+  final String? language;
 
   @override
   State<Lesson> createState() => _LessonState();
 }
 
 class _LessonState extends State<Lesson> {
+
+  //
+  final gemini = Gemini.instance;
+
+
+  //
+  int lessonCounter = 0;
+  //
+
+  //
+  final controller = TextEditingController();
+
+  late  LessonModel lessonModel;
+
+  // FlutterTts flutterTts = FlutterTts();
+
+  final flutterTts = FlutterTts();
+
+  Future<void> speak(String text) async {
+    await flutterTts.setLanguage("en-US");
+    await flutterTts.setPitch(1.0);
+    await flutterTts.setSpeechRate(0.5);
+    await flutterTts.speak(text);
+  }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _streamGenerativeContent();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     //Media Query
@@ -48,7 +94,7 @@ class _LessonState extends State<Lesson> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          height: height*.015,
+                          height: height*.01,
                           width: width*.75,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
@@ -60,7 +106,7 @@ class _LessonState extends State<Lesson> {
                           child: SizedBox(
                             width: width * 0.10,
                             child: Container(
-                              height: height * 0.035,
+                              height: height * 0.028,
                               decoration: BoxDecoration(
                                 border: Border.all(color: colorPrimary, width: 2),
                                 shape: BoxShape.circle,
@@ -84,7 +130,7 @@ class _LessonState extends State<Lesson> {
 
                     Gap(height*.06),
                     Center(
-                      child: Text("Hello how are you!", style: TextStyle(color: colorPrimary, fontSize: 15),),
+                      child: Text(controller.text, style: TextStyle(color: colorPrimary, fontSize: 15),),
                     ),
                     Gap(height*.02),
                     Container(
@@ -97,93 +143,52 @@ class _LessonState extends State<Lesson> {
                       child: Align(
                         alignment: Alignment.topCenter,
                         child: Padding(
-                          padding: EdgeInsets.only(left: width*.05, right: width*.05, top: height*.02),
+                          padding: EdgeInsets.only(left: width*.05, right: width*.05, bottom: height*0.04),
                           child: Row(
                             children: [
-                              SizedBox(
-                                height: height * 0.03,
-                                child: SvgPicture.asset(
-                                  'assets/icons/speakerIcon.svg',
+                              GestureDetector(
+                                child: SizedBox(
+                                  height: height * 0.03,
+                                  child: SvgPicture.asset(
+                                    'assets/icons/speakerIcon.svg',
+                                  ),
                                 ),
+                                onTap: (){
+                                  // flutterTts.speak(controller.text);
+                                  speak(controller.text);
+                                  debugPrint(controller.text);
+                                },
                               ),
-                              Gap(width*.02),
-                              Text('Bonjour Comment ça va', style: TextStyle(color: colorPrimary),)
+                              Gap(width*.0),
+                              Padding(
+                                padding:  EdgeInsets.only(bottom: height*.032, left: width*0.03 ),
+                                child: GeminiResponseTypeView(
+                                    builder: ((context, child, response, loading) {
+                                      if (loading) {
+                                        return Center(
+                                          child: SizedBox(
+                                              width: width * .1,
+                                              height: height * .05,
+                                              child: Lottie.asset(
+                                                  'assets/lottie/loading.json')),
+                                        );
+                                      }
+                                      if (response != null) {
+                                        return Text(
+                                          response,
+                                          style: TextStyle(color: colorPrimary),
+                                        );
+                                      }
+                                      return const SizedBox();
+                                    })),
+                              ),
                             ],
                           ),
                         ),
                       )
                     ),
-                    Gap(height*.04),
-                    Padding(
-                      padding: EdgeInsets.only(left: width*.1, right: width*.1),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            height: height*.04,
-                            width: width*.3,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: colorPrimary, width: 1),
-                            ),
-                            child: Center(
-                              child: Text('Bonjour', style: TextStyle(
-                                color: colorPrimary
-                              ),),
-                            ),
-                          ),
-                          Container(
-                            height: height*.04,
-                            width: width*.3,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: colorPrimary, width: 1),
-                            ),
-                            child: Center(
-                              child: Text('Çava', style: TextStyle(
-                                  color: colorPrimary
-                              ),),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Gap(height*.02),
-                    Padding(
-                      padding: EdgeInsets.only(left: width*.1, right: width*.1),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            height: height*.04,
-                            width: width*.3,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: colorPrimary, width: 1),
-                            ),
-                            child: Center(
-                              child: Text('Bonjour', style: TextStyle(
-                                  color: colorPrimary
-                              ),),
-                            ),
-                          ),
-                          Container(
-                            height: height*.04,
-                            width: width*.3,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: colorPrimary, width: 1),
-                            ),
-                            child: Center(
-                              child: Text('Çava', style: TextStyle(
-                                  color: colorPrimary
-                              ),),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Gap(height*.4),
+
+                    Gap(height*.1),
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: GestureDetector(
@@ -196,14 +201,14 @@ class _LessonState extends State<Lesson> {
 
                           ),
                           child: Center(
-                            child: Text('Check', style: TextStyle(color: colorPrimary),),
+                            child: Text('Next', style: TextStyle(color: colorPrimary),),
                           ),
                         ),
                         onTap: (){
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                                return const LessonComplete();
-                              }));
+                          lessonCounter++;
+                          _lessonCounter();
+                          // _streamGenerativeContent();
+
                         },
                       ),
                     )
@@ -211,5 +216,43 @@ class _LessonState extends State<Lesson> {
                 ))
           ],
         ));
+  }
+
+  void _lessonCounter(){
+    debugPrint(lessonCounter.toString());
+    if(lessonCounter != 10){
+      _streamGenerativeContent();
+    }else{
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) {
+            return const LessonComplete();
+          }));
+    }
+  }
+  void _streamGenerativeContent() {
+    lessonModel = LessonData.lessons[Random().nextInt(LessonData.lessons.length)];
+
+    setState(() {
+      controller.text = lessonModel.phase;
+    });
+
+    final prompt =
+        'What\'s "${controller.text}" in ${widget.language}';
+
+    print(prompt);
+    gemini.streamGenerateContent(prompt,
+        generationConfig: GenerationConfig(
+          temperature: 1,
+        ),
+        safetySettings: [
+          SafetySetting(
+              category: SafetyCategory.hateSpeech,
+              threshold: SafetyThreshold.blockLowAndAbove),
+          SafetySetting(
+              category: SafetyCategory.harassment,
+              threshold: SafetyThreshold.blockLowAndAbove)
+        ]).listen((event) {
+      // ref.read(Providers.uiStateNotifier.notifier).updateState(UIState.loaded);
+    });
   }
 }
