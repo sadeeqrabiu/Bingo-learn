@@ -109,19 +109,4 @@ class _LoginAcSetupState extends State<LoginAcSetup> {
     );
   }
 
-
-  // void fetchData() async {
-  //   ApiService.getUserData().then((response) => {
-  //     getUser(),
-  // });
-  // }
-  // Future<void> getUser() async {
-  //   _userData = await ApiService.getUserData();
-  //   debugPrint('firstName: ${_userData?[0].firstName}');
-  //   debugPrint('middleName: ${_userData?[0].middleName}');
-  //   debugPrint('LastName: ${_userData?[0].lastName}');
-  //   debugPrint('LastName: ${_userData?[0].language}');
-  // }
-
-
 }

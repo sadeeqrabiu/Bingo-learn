@@ -41,10 +41,11 @@ class _LessonState extends State<Lesson> {
 
   late  LessonModel lessonModel;
 
-  // FlutterTts flutterTts = FlutterTts();
+  //Text-to-speech
 
   final flutterTts = FlutterTts();
 
+//Text-to-speech config
   Future<void> speak(String text) async {
     await flutterTts.setLanguage("en-US");
     await flutterTts.setPitch(1.0);
@@ -218,6 +219,7 @@ class _LessonState extends State<Lesson> {
         ));
   }
 
+  //Lesson Counter to end the lesson
   void _lessonCounter(){
     debugPrint(lessonCounter.toString());
     if(lessonCounter != 10){

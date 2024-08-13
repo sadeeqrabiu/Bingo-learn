@@ -16,7 +16,7 @@ import '../models/sign_up/sign_up_response.dart';
 
 class SharedService{
 
-
+//This is to set the login details Offline for the user to open the app without login again
   static Future<void> setLoginDetails(LoginResponseModel model) async {
     APICacheDBModel cacheDBModel = APICacheDBModel(key: "access_token", syncData: jsonEncode(model.toJson()));
     await APICacheManager().addCacheData(cacheDBModel);
@@ -28,7 +28,7 @@ class SharedService{
     return isKeyExit;
   }
 
-  //Login response
+  //storing Login response
   static Future<LoginResponseModel?> loginDetails() async {
     var isKeyExit = await APICacheManager().isAPICacheKeyExist("access_token");
     if (isKeyExit) {

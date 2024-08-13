@@ -210,10 +210,6 @@ class _TranslateAiState extends State<TranslateAi> {
           '* what\'s ${chatMessage.text} in ${widget.language}';
 
        debugPrint(promptInstruction);
-
-      // gemini.streamGenerateContent(translation,generationConfig: GenerationConfig(
-      //   temperature: 1,
-      // ) ).listen((event){});
       gemini.streamGenerateContent(
           promptInstruction,
           generationConfig:

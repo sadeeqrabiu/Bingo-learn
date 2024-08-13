@@ -4,12 +4,6 @@ import 'dart:convert';
 UserDataModel userDataResponseJson(String str) =>
     UserDataModel.fromJson(json.decode(str));
 
-// UserDataListModel userDataResponseJson(String str) =>
-//     UserDataListModel.fromJson(json.decode(str));
-
-// List<UserDataModel> userDataResponseJson(String str) =>
-//     List<UserDataModel>.from(json.decode(str).map((item) => UserDataModel.fromJson(item)));
-
 class UserDataModel {
   String? firstName;
   String? lastName;

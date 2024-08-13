@@ -21,8 +21,6 @@ class FlashCard extends ConsumerStatefulWidget {
   const FlashCard({
     Key? key,
     required this.language,
-    // required this.correct,
-    // required this.time,
   }) : super(key: key);
 
   final String? language;
@@ -49,30 +47,21 @@ class _FlashCardState extends ConsumerState<FlashCard> {
 
   //time display
   var timeDisplay = false;
-  //
+  //Correct +
   addCorrect() {
     correct = correct++;
-    // setState(() {
-    //   correct = correct++;
-    // });
   }
-
+//InCorrect +
   addInCorrect() {
     inCorrect = inCorrect++;
-    // setState(() {
-    //   inCorrect = inCorrect++;
-    // });
   }
-
+//Cards Number +-
   addNumberOfCards() {
     flashCardCounter = flashCardCounter++;
-    // setState(() {
-    //   flashCardCounter = flashCardCounter++;
-    // });
   }
 
 
-
+//List of colors for the cards
   List colorList = [
     colorBlue,
     colorYellow,
@@ -86,42 +75,11 @@ class _FlashCardState extends ConsumerState<FlashCard> {
     colorGreen,
   ];
 
-  // // Step 2
-  // Timer? countdownTimer;
-  // Duration cardTimer = const Duration(minutes: 10);
-
-  /// Timer related methods ///
-  // Step 3
-  // startTimer() {
-  //   countdownTimer =
-  //       Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
-  // }
-
-  // // Step 4
-  // void stopTimer() {
-  //   setState(() => countdownTimer!.cancel());
-  // }
-  //
-  // // Step 6
-  // void setCountDown() {
-  //   const reduceSecondsBy = 1;
-  //   setState(() {
-  //     final seconds = cardTimer.inSeconds - reduceSecondsBy;
-  //     if (seconds == 0) {
-  //       startTimer();
-  //     } else {
-  //       cardTimer = Duration(seconds: seconds);
-  //     }
-  //   });
-  // }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getWords();
-    // startTimer();
-    // _streamGenerativeContent();
   }
 
   TextEditingController randomWordsController = TextEditingController();
@@ -135,11 +93,7 @@ class _FlashCardState extends ConsumerState<FlashCard> {
     //provider
     final uiState = ref.watch(GameProvider.uiStateNotifier);
 
-    //Time
-    //
     String strDigits(int n) => n.toString().padLeft(2, '0');
-    // final seconds = strDigits(cardTimer.inSeconds.remainder(60));
-    // final minutes = strDigits(cardTimer.inMinutes.remainder(10));
     return Scaffold(
         backgroundColor: colorPrimary,
         appBar: AppBar(
@@ -254,6 +208,8 @@ class _FlashCardState extends ConsumerState<FlashCard> {
                         ),
                       ),
                       Gap(height * .0),
+
+                      //Cards section
                       if (isLoaded)
                         Container(
                           height: height * 0.35,
@@ -320,6 +276,7 @@ class _FlashCardState extends ConsumerState<FlashCard> {
         ));
   }
 
+  //card Notifier
   void _cardNotifier(UIState uiState) {
     switch (uiState) {
       case UIState.notStarted:
@@ -334,8 +291,9 @@ class _FlashCardState extends ConsumerState<FlashCard> {
     }
   }
 
+
   checkCards() {
-    if (flashCardCounter == 3) {
+    if (flashCardCounter == 10) {
       debugPrint(flashCardCounter.toString());
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return GameComplete(
@@ -351,8 +309,6 @@ class _FlashCardState extends ConsumerState<FlashCard> {
   }
 
   void _streamGenerativeContent() {
-    //timer
-    // startTimer();
     setState(() {
       timeDisplay = true;
     });
@@ -366,8 +322,7 @@ class _FlashCardState extends ConsumerState<FlashCard> {
           '* Make a short sentence with ${randomWordsController.text} without using ${randomWordsController.text}'
           '* Show response in English And ${widget.language} and be concise.';
 
-      print(prompt);
-
+      //Gemini Stream
       gemini.streamGenerateContent(prompt,
           generationConfig:
               GenerationConfig(temperature: 1, maxOutputTokens: 200),
@@ -382,9 +337,7 @@ class _FlashCardState extends ConsumerState<FlashCard> {
         // ref.read(Providers.uiStateNotifier.notifier).updateState(UIState.loaded);
       });
     } else {
-      // final words = wordsList[Random().toString()];
       final randomIndex = _words![Random().nextInt(_words!.length)];
-      // randomIndex = randomWordsController.text;
       randomWordsController.text = randomIndex.word;
       debugPrint(randomWordsController.text);
       final prompt =

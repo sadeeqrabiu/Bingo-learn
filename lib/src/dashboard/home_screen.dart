@@ -43,6 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
     // fetchData();
     getUser();
   }
+
+  //getting user data
   List<UserDataListModel>? _userData;
 
 
@@ -50,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     //Media Query
 
+    //Timer
     double percent = timeSpent / totalTime;
 
     final double height = MediaQuery.of(context).size.height;
@@ -66,13 +69,14 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Container(
               decoration: const BoxDecoration(
-                // image: DecorationImage(image: AssetImage("assets/block.png"), fit: BoxFit.cover,),
                 gradient: LinearGradient(
                     colors: [Color(0xFF11212D), Color(0xFF06141B)],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter),
               ),
             ),
+
+
          //
             Padding(
               padding:  EdgeInsets.only(left: width*.05, right: width*.05),
@@ -174,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                ),
                              ),
 
-
+//Percentage indicator
                              LinearPercentIndicator(
                                width: width*.45,
                                lineHeight: height*.01,
@@ -184,18 +188,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                barRadius: const Radius.circular(20),
 
                              )
-                             // Container(
-                             //   height: height*.01,
-                             //   width: width*.45,
-                             //   decoration: BoxDecoration(
-                             //     borderRadius: BorderRadius.circular(20),
-                             //     color: colorPrimary
-                             //   ),
-                             // )
                            ],
                          ),
                        ),
                         ),
+
+
+                      //DashBoard Card
                       Container(
                         margin: EdgeInsets.only(right: width*0.04, bottom: height*.025),
                         height: height * 0.2,
@@ -206,6 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   Gap(height*.00),
+                  //Dashboard Cards
                   Padding(
                     padding: EdgeInsets.only(left: width*.08, right: width*.08),
                     child: Row(
@@ -306,8 +306,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Text('Continue', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: colorPrimary),),
                                   Text('lesson', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: colorPrimary),),
                                   Text('Improve your learning!', style: TextStyle(fontSize: 10, color: colorPrimary),)
-
-
                                 ],
                               ),
                             ),
@@ -349,9 +347,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       decoration: BoxDecoration(
                                         color: colorPrimary,
                                         shape: BoxShape.circle,
-                                        // image: DecorationImage(
-                                        //     image: NetworkImage(profileModel.profileImg),
-                                        //     fit: BoxFit.cover),
                                       ),
                                       child: Center(
                                         child: SizedBox(
@@ -442,12 +437,14 @@ class _HomeScreenState extends State<HomeScreen> {
         ));
   }
 
+  //Sending a request to user Data from ApI
   void fetchData() async {
     ApiService.getUserData().then((response) => {
       getUser(),
     });
   }
 
+  //Get user data and update App state
   Future<void> getUser() async {
     try {
       final userData = await ApiService.getUserData();
@@ -458,19 +455,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // Handle API errors here, potentially including redirecting to LandingScreen
       SharedService.logout(context);
       debugPrint('Failed to fetch user data: $error');
-      // Navigator.pushAndRemoveUntil(...); // Navigation logic here
     }
   }
-  // Future<void> _getUser() async {
-  //   try {
-  //     final userData = await ApiService.getUserData();
-  //     setState(() {
-  //       _userData = userData;
-  //     });
-  //   } catch (error) {
-  //     // Handle API errors gracefully (e.g., display an error message)
-  //     debugPrint(error.toString());
-  //   }
-  //
-  // }
+
 }
