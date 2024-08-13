@@ -22,14 +22,15 @@ class BingoChat extends StatefulWidget {
 class _BingoChatState extends State<BingoChat> {
   //Gemini Instance
   final gemini = Gemini.instance;
+
+  //Text-field Controller
   final controller = TextEditingController();
 
 
   @override
   void initState() {
     super.initState();
-    // checkTime();
-    // fetchData();
+
     getUser();
     _welcomeUser();
   }
@@ -37,6 +38,7 @@ class _BingoChatState extends State<BingoChat> {
   //List of user Data for language
   List<UserDataListModel>? _userLanguage;
 
+  //prompt controller
   TextEditingController userPrompt = TextEditingController();
 
   @override
@@ -215,6 +217,7 @@ class _BingoChatState extends State<BingoChat> {
     }
   }
 
+  //First prompt
   void _welcomeUser() {
     final promptInstruction =
         '**System Instructions:**'
@@ -241,7 +244,6 @@ class _BingoChatState extends State<BingoChat> {
               category: SafetyCategory.harassment,
               threshold: SafetyThreshold.blockLowAndAbove)
         ]).listen((event) {
-      // ref.read(Providers.uiStateNotifier.notifier).updateState(UIState.loaded);
     });
   }
 

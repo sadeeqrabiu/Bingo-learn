@@ -6,7 +6,7 @@ class LessonData{
 
   static const googleAIStudioAPIKey = 'AIzaSyAfnQqSJeljb4_g-CmweqsiQ_fDXxkPTfk';
 
-  /// Fruits
+  /// Lesson Phases
   static final lessons = <LessonModel>[
     LessonModel(
       phase: 'I am',

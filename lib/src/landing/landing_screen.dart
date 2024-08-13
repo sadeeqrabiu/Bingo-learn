@@ -55,13 +55,7 @@ class _LandingScreenState extends State<LandingScreen> {
                   width: width * 8.5,
                   height: height * .4,
                   child: Lottie.asset('assets/lottie/GlobalLearn.json')),
-              // SizedBox(
-              //   height: height * 0.35,
-              //   width: width,
-              //   child: SvgPicture.asset(
-              //     'assets/svgs/BingoLand.svg',
-              //   ),
-              // ),
+
               SizedBox(
                 height: height * 0.02,
               ),

@@ -12,12 +12,12 @@ class GameComplete extends StatefulWidget {
     Key? key,
     required this.incorrect,
     required this.correct,
-    // required this.time,
+
   }) : super(key: key);
 
   final String? incorrect;
   final String? correct;
-  // final String? time;
+
 
 
   @override

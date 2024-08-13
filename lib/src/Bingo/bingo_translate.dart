@@ -28,6 +28,7 @@ class _BingoTranslateState extends State<BingoTranslate> {
   //Text-to-speech
   final flutterTts = FlutterTts();
 
+  //Text-to-speech config
   Future<void> speak(String text) async {
     await flutterTts.setLanguage("en-US");
     await flutterTts.setPitch(1.0);
@@ -40,13 +41,13 @@ class _BingoTranslateState extends State<BingoTranslate> {
   @override
   void initState() {
     super.initState();
-    // checkTime();
     getUser();
   }
 
   //List of user Data for language
   List<UserDataListModel>? _userLanguage;
 
+  //User prompt controller
   TextEditingController userPrompt = TextEditingController();
 
 

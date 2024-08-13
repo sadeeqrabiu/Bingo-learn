@@ -2,7 +2,7 @@
 
 
 
-
+//Config class for API endpoints
 
 class Config{
 
